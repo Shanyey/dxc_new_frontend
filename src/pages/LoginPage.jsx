@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase";
-
 import "./LoginPage.css";
 import DXCLogo from "../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
@@ -11,15 +8,10 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = (e) => {
-    e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password);
-  };
-
   return (
     <div className="wrapper">
       <img src={DXCLogo} className="logo" />
-      <form action="" onSubmit={login}>
+      <form action="">
         <h1>Login</h1>
         <div className="input-box">
           <input
