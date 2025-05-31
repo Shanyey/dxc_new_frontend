@@ -1,3 +1,15 @@
+.login-background {
+  display: flex;
+  flex: 1;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: url('../../assets/login_background.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .wrapper {
     width: 420px;
     background: transparent;

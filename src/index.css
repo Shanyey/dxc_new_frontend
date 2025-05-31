@@ -13,13 +13,3 @@ box-sizing: border-box;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
-  justify-content: center;
-  align-items: center;
-  background: url('./assets/login_background.jpg') no-repeat;
-  background-size: cover;
-  background-position: center;
-}
