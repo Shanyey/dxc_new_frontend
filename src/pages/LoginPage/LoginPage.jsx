@@ -3,10 +3,12 @@ import "./LoginPage.css";
 import DXCLogo from "../../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ function LoginPage() {
   return (
     <div className="login-background">
       <div className="wrapper">
-        <img src={DXCLogo} className="logo" />
+        <img src={DXCLogo} className="logo" alt="DXC Logo" />
         <form onSubmit={handleSubmit}>
           <h1>Login</h1>
           <div className="input-box">
@@ -40,7 +42,7 @@ function LoginPage() {
             <FaLock className="icon" />
           </div>
           <div className="forgot-password">
-            <a href="https://www.google.com/">Forgot password?</a>
+            <Link to="/reset">Forgot Password?</Link>
           </div>
           <button type="submit">Login</button>
         </form>

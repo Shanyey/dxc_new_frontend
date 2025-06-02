@@ -1,0 +1,108 @@
+.reset-background {
+  display: flex;
+  flex: 1;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: url('../../assets/login_background.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.wrapper {
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color:rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center  ;
+}
+
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: white;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+    color: white;
+
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
+.wrapper .forgot-password {
+    display: flex;
+    justify-content: right;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.wrapper .reset-button {
+    width: 100%;
+    height: 45px;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius:  40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    font-weight: 700;
+}
+
+.wrapper .return-button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    text-decoration: underline;
+    font-size: 16px;
+    cursor: default;
+    margin: 0;
+    box-shadow: none;
+}
+
+.return-button .clickable-text {
+  color: white;
+  cursor: pointer;
+}
+
+.logo {
+    justify-content: center;
+}
+
+.wrapper .return {
+    display: flex;
+    justify-content: right;
+    font-size: 14.5px;
+    margin: -30px 0 5px;
+}
