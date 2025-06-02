@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginPage.css";
 import DXCLogo from "../../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, replace } from "react-router-dom";
+import { auth } from "../../../../dxc_frontend_dev/src/Firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,8 +14,27 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Email: ${email} \n password: ${password}`); //TO BE REMOVED
+    try {
+      const userCredentials = signInWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      setUserInfo({
+        userDetails: user.displayName,
+        userImage: user.photoURL,
+        userMail: user.email,
+      });
+    } catch (error) {
+      console.log(error.code, error.message);
+    }
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      console.log(user);
+      if (user != null) {
+        navigate("/home", { replace: true });
+      }
+    });
+  }, []);
 
   return (
     <div className="login-background">
