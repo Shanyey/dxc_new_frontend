@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./HomePage.css";
 import TopBar from "../../components/TopBar/TopBar";
-import TranslationIcon from "../../assets/translation-icon.png";
-import URLIcon from "../../assets/url-icon.png";
-import ChatIcon from "../../assets/chat-icon.png";
+import TranslationIcon from "../../assets/icons/translation-icon.png";
+import URLIcon from "../../assets/icons/url-icon.png";
+import ChatIcon from "../../assets/icons/chat-icon.png";
 
 function HomePage() {
   const [input, setInput] = useState("");

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./TopBar.css";
-import SettingsIcon from "../../assets/settings.png";
-import UserManual from "../../assets/user-manual.png";
+import SettingsIcon from "../../assets/icons/settings.png";
+import UserManual from "../../assets/icons/user-manual.png";
 import DXCLogo from "../../assets/dxc-brand.png";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useLocation } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { auth } from "../../../../dxc_frontend_dev/src/Firebase";
+//temporary, installed once done with firebase
+/* import { auth } from "../../../../dxc_frontend_dev/src/Firebase"; */
 
 function TopBar() {
-  const auth = getAuth();
+/*  const auth = getAuth(); */
   const [selectedItem, setSelectedItem] = useState("Home");
 
   const handleSignOut = () => {
@@ -20,7 +21,7 @@ function TopBar() {
     } catch {
       console.error("error signing out");
     }
-  };
+  }; 
 
   const handleSelect = (eventKey) => {
     setSelectedItem(eventKey);
