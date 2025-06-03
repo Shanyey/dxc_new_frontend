@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/reset" element={<ResetPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/BFQ" element={<BFQPage />} />
+        <Route path="/home/batchfilequery" element={<BFQPage />} />
       </Routes>
     </Router>
   );

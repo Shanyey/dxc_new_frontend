@@ -21,7 +21,7 @@ function HomePage() {
   };
 
   return (
-    <div className="d-flex flex-column vh-100" style={{ backgroundColor: '#f8f8f8' }}>
+    <div className="page">
       <TopBar />
 
       {messages.length === 0 ? (

@@ -1,0 +1,17 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f8f8f8;
+}
+
+.BFQIntro{
+    margin: 0 auto;
+    font-size: larger;
+}
+
+ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
