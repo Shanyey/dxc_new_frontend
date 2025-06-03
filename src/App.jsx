@@ -4,6 +4,7 @@ import ResetPage from "./pages/ResetPage/ResetPage";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
+import BFQPage from "./pages/BatchFileQueryPage/BFQPage"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/reset" element={<ResetPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/BFQ" element={<BFQPage />} />
       </Routes>
     </Router>
   );

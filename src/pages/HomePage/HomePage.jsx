@@ -21,7 +21,7 @@ function HomePage() {
   };
 
   return (
-    <div className="d-flex flex-column vh-100">
+    <div className="d-flex flex-column vh-100" style={{ backgroundColor: '#f8f8f8' }}>
       <TopBar />
 
       {messages.length === 0 ? (
@@ -31,7 +31,7 @@ function HomePage() {
               <p className="welcome">Welcome to DXC</p>
               <p className="text-muted">What would you like to do today?</p>
               <p>Home can handle:</p>
-              <div className="cards d-flex justify-content-center align-items-center gap-4">
+              <div className="cards">
                 <div className="card">
                   <div className="card-body">
                     <img src={ChatIcon} className="logo" alt="Chat" />
@@ -60,11 +60,11 @@ function HomePage() {
 
           <form
             onSubmit={handleSend}
-            className="mt-4 d-flex align-items-center"
+            className="textbox"
           >
             <input
               type="text"
-              className="form-control me-2 rounded-pill"
+              className="inputbox"
               value={input}
               onChange={handleChange}
               placeholder="Type a message..."
@@ -107,11 +107,11 @@ function HomePage() {
 
           <form
             onSubmit={handleSend}
-            className="border-top p-3 d-flex align-items-center"
+            className="textbox"
           >
             <input
               type="text"
-              className="form-control me-2 rounded-pill"
+              className="inputbox"
               value={input}
               onChange={handleChange}
               placeholder="Type a message..."
