@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import './DropZone2.css'; // Import custom CSS for styling
-//import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-//import ClearIcon from '@mui/icons-material/Clear';
+import './DropZone.css'; // Import custom CSS for styling
+import TrashIcon from '../../assets/icons/trash-icon.png';
 
 const Dropzone = ({ acceptedFileTypes, files, setFiles }) => {
   // const [droppedFiles, setDroppedFiles] = useState([]);
@@ -64,7 +63,7 @@ const Dropzone = ({ acceptedFileTypes, files, setFiles }) => {
                 handleDelete(file);
               }}
             >
-              <ClearIcon />
+              <img src={TrashIcon} alt="Delete" className="trash-icon" />
             </button>
           </div>
         ))}

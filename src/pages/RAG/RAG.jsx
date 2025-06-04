@@ -3,7 +3,7 @@ import axios from 'axios';
 // import { Oval } from 'react-loader-spinner'; // Importing the spinner
 import './Rag.css';
 import { useNavigate } from "react-router-dom";
-import Dropzone from "./DropZone2"; // Ensure this path is correct
+import Dropzone from "./DropZone"; // Ensure this path is correct
 //import { auth } from "../Firebase";
 import TopBar from "../../components/TopBar/TopBar";
 
@@ -145,77 +145,82 @@ const RagPage = () => {
   };
 
   return (
-    <div>
-        <TopBar />
-      <h1 className="title">Retrieval Augmented Generation </h1>
-      <p className="ragDescription">Upload your .pdf or .txt documents and chat</p>
-     
-      
-      <Dropzone 
-      acceptedFileTypes={['application/pdf', 'text/plain']} 
-      // onFilesAdded={handleFilesA
-      files={file}
-      setFiles={setFile}
-      />
-      
-      <div className="buttonContainer">
-        <button onClick={handleFileUpload} className="uploadButton" aria-label="Upload Files">Upload</button>
-        <button onClick={handleReset} className="resetButton" type="button" aria-label="Reset Chat">Reset Chat</button>
-      </div>
-      
-      {isUploading && (
-        <div className="centeredContent">
-          <Oval
-            height={40}
-            width={40}
-            color="#4fa94d"
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="#4fa94d"
-            strokeWidth={2}
-            strokeWidthSecondary={2}
+    <div className="page">
+      <TopBar />
+      <div className="container-fluid p-4">
+        <h1 className="title">Retrieval Augmented Generation</h1>
+        <p className="ragDescription">Upload your .pdf or .txt documents and chat.</p>
+        <p className="ragDescription">RAG helps AI provide better answers by looking at your documents before responding</p>
+        
+        <div className="upload-section">
+          <Dropzone 
+            acceptedFileTypes={['application/pdf', 'text/plain']} 
+            files={file}
+            setFiles={setFile}
           />
-          <p>Uploading...</p>
-        </div>
-      )}
-      {uploadStatus && <p>{uploadStatus}</p>}
-
-      <h2 className="chatLine">Chat</h2>
-      <div ref={chatBoxRef} className="chatBox">
-        {chatHistory.map((msg, index) => (
-          <div key={msg.id || index} className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`}>
-            <p><strong>{msg.role === 'user' ? 'You' : 'Assistant'}:</strong> {msg.content}</p>
+          
+          <div className="buttonContainer">
+            <button onClick={handleFileUpload} className="uploadButton" aria-label="Upload Files">Upload</button>
+            <button onClick={handleReset} className="resetButton" type="button" aria-label="Reset Chat">Reset Chat</button>
           </div>
-        ))}
-      </div>
-      
-      <form onSubmit={handleChatSubmit} className="inputContainer">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ask a question about the PDF..."
-          className="chatInput"
-          aria-label="Chat Input"
-        />
-        <button type="submit" className="sendButton" aria-label="Send Message">Send</button>
-      </form>
-      
-      {isLoading && (
-        <div className="loadingContainer">
-          <Oval
-            height={40}
-            width={40}
-            color="#4fa94d"
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="#4fa94d"
-            strokeWidth={2}
-            strokeWidthSecondary={2}
-          />
-          <p className="loadingText">Loading...</p>
+          
+          {isUploading && (
+            <div className="centeredContent">
+              <Oval
+                height={40}
+                width={40}
+                color="#4fa94d"
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#4fa94d"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+              <p>Uploading...</p>
+            </div>
+          )}
+          {uploadStatus && <p>{uploadStatus}</p>}
+
         </div>
-      )}
+
+        <div className="chat-section">
+          <h2 className="chatLine">Chat</h2>
+          <form onSubmit={handleChatSubmit} className="inputContainer">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Ask a question about the PDF..."
+              className="chatInput"
+              aria-label="Chat Input"
+            />
+            <button type="submit" className="sendButton" aria-label="Send Message">Send</button>
+          </form>
+          <div ref={chatBoxRef} className="chatBox">
+            {chatHistory.map((msg, index) => (
+              <div key={msg.id || index} className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`}>
+                <p><strong>{msg.role === 'user' ? 'You' : 'Assistant'}:</strong> {msg.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {isLoading && (
+          <div className="loadingContainer">
+            <Oval
+              height={40}
+              width={40}
+              color="#4fa94d"
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="#4fa94d"
+              strokeWidth={2}
+              strokeWidthSecondary={2}
+            />
+            <p className="loadingText">Loading...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
