@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./TopBar.css";
 import SettingsIcon from "../../assets/icons/settings.png";
@@ -30,6 +30,22 @@ function TopBar() {
   const location = useLocation();
   const basePath = location.pathname.replace(/\/$/, "");
 
+  // Set initial selected item based on current path
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/batchfilequery')) {
+      setSelectedItem("Batch File Query");
+    } else if (path.includes('/AIRA')) {
+      setSelectedItem("AIRA");
+    } else if (path.includes('/RAG')) {
+      setSelectedItem("RAG");
+    } else if (path.includes('/chat')) {
+      setSelectedItem("Real-Time Web Search Chat");
+    } else {
+      setSelectedItem("Home");
+    }
+  }, [location]);
+
   return (
     <div className="home-page">
       <div className="header d-flex justify-content-between align-items-center p-3">
@@ -51,25 +67,26 @@ function TopBar() {
               {selectedItem}
             </Dropdown.Toggle>
 
+            {/*To add on whenever there are new features*/}
             <Dropdown.Menu>
               <Dropdown.Item eventKey="Home" href="/home">
                 Home
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="Batch File Query"
-                href={`${basePath}/batchfilequery`}
+                href="/batchfilequery"
               >
                 Batch File Query
               </Dropdown.Item>
-              <Dropdown.Item eventKey="AIRA" href={`${basePath}/AIRA`}>
+              <Dropdown.Item eventKey="AIRA" href="/AIRA">
                 AIRA
               </Dropdown.Item>
-              <Dropdown.Item eventKey="RAG" href={`${basePath}/RAG`}>
+              <Dropdown.Item eventKey="RAG" href="/RAG">
                 RAG
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="Real-Time Web Search Chat"
-                href={`${basePath}/chat`}
+                href="/chat"
               >
                 Real-Time Web Search Chat
               </Dropdown.Item>
@@ -85,7 +102,7 @@ function TopBar() {
           </div>
           <div>
             <img src={UserManual} alt="Settings" className="img-fluid" />
-            <a href={`${basePath}/userguide`}>User Guide</a>
+            <a href="/userguide">User Guide</a>
           </div>
         </div>
       </div>

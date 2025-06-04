@@ -57,3 +57,10 @@ ul{
     border-radius: 0.375rem;
     cursor: pointer;
 }
+
+.drop{
+    border: 1px dashed black;
+    background-color: grey;
+    text-align: center;
+    
+}

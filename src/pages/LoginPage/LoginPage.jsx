@@ -4,7 +4,7 @@ import DXCLogo from "../../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { useNavigate, Link, replace } from "react-router-dom";
-import { auth } from "../../../../dxc_frontend_dev/src/Firebase";
+//import { auth } from "../../../../dxc_frontend_dev/src/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 function LoginPage() {

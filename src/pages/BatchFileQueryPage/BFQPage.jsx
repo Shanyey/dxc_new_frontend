@@ -9,6 +9,10 @@ import Select from "react-select";
 //import { auth } from "../Firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 
+//For temporary react-dropzone
+import {useCallback} from 'react'
+import Dropzone from 'react-dropzone'
+
 function BatchFileQueryPage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState();
@@ -244,6 +248,17 @@ function BatchFileQueryPage() {
           */}
 
           {/*Temporary Dropzone*/}
+          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            {({getRootProps, getInputProps}) => (
+              <section className="drop">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <p>THIS IS A TEMPORARY DROPZONE</p>
+                  <p>Drag and drop some files here, or click to select files. Only .pdf or .txt files are accepted.</p>
+                </div>
+              </section>
+            )}
+          </Dropzone>
           <br></br>
         </div>
       </div>
