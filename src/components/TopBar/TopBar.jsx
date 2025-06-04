@@ -11,17 +11,18 @@ import { getAuth, signOut } from "firebase/auth";
 /* import { auth } from "../../../../dxc_frontend_dev/src/Firebase"; */
 
 function TopBar() {
-/*  const auth = getAuth(); */
+  /*  const auth = getAuth(); */
   const [selectedItem, setSelectedItem] = useState("Home");
 
   const handleSignOut = () => {
-    try {
-      signOut(auth);
-      console.log("user signed out");
-    } catch {
-      console.error("error signing out");
-    }
-  }; 
+    console.log("user signed out");
+    // try {
+    //   signOut(auth);
+    //   console.log("user signed out");
+    // } catch {
+    //   console.error("error signing out");
+    // }
+  };
 
   const handleSelect = (eventKey) => {
     setSelectedItem(eventKey);
@@ -33,13 +34,13 @@ function TopBar() {
   // Set initial selected item based on current path
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes('/batchfilequery')) {
+    if (path.includes("/batchfilequery")) {
       setSelectedItem("Batch File Query");
-    } else if (path.includes('/AIRA')) {
+    } else if (path.includes("/AIRA")) {
       setSelectedItem("AIRA");
-    } else if (path.includes('/RAG')) {
+    } else if (path.includes("/RAG")) {
       setSelectedItem("RAG");
-    } else if (path.includes('/chat')) {
+    } else if (path.includes("/chat")) {
       setSelectedItem("Real-Time Web Search Chat");
     } else {
       setSelectedItem("Home");
@@ -72,10 +73,7 @@ function TopBar() {
               <Dropdown.Item eventKey="Home" href="/home">
                 Home
               </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="Batch File Query"
-                href="/batchfilequery"
-              >
+              <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
                 Batch File Query
               </Dropdown.Item>
               <Dropdown.Item eventKey="AIRA" href="/AIRA">
@@ -84,10 +82,7 @@ function TopBar() {
               <Dropdown.Item eventKey="RAG" href="/RAG">
                 RAG
               </Dropdown.Item>
-              <Dropdown.Item
-                eventKey="Real-Time Web Search Chat"
-                href="/chat"
-              >
+              <Dropdown.Item eventKey="Real-Time Web Search Chat" href="/chat">
                 Real-Time Web Search Chat
               </Dropdown.Item>
             </Dropdown.Menu>

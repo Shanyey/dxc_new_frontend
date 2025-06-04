@@ -14,27 +14,28 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const userCredentials = signInWithEmailAndPassword(auth, email, password);
-      const user = userCredentials.user;
-      setUserInfo({
-        userDetails: user.displayName,
-        userImage: user.photoURL,
-        userMail: user.email,
-      });
-    } catch (error) {
-      console.log(error.code, error.message);
-    }
+    navigate("/home", { replace: true });
+    // try {
+    //   const userCredentials = signInWithEmailAndPassword(auth, email, password);
+    //   const user = userCredentials.user;
+    //   setUserInfo({
+    //     userDetails: user.displayName,
+    //     userImage: user.photoURL,
+    //     userMail: user.email,
+    //   });
+    // } catch (error) {
+    //   console.log(error.code, error.message);
+    // }
   };
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      if (user != null) {
-        navigate("/home", { replace: true });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   auth.onAuthStateChanged((user) => {
+  //     console.log(user);
+  //     if (user != null) {
+  //       navigate("/home", { replace: true });
+  //     }
+  //   });
+  // }, []);
 
   return (
     <div className="login-background">
@@ -46,7 +47,7 @@ function LoginPage() {
             <input
               type="email"
               placeholder="Email"
-              required
+              //required
               value={email}
               onChange={(ev) => setEmail(ev.target.value)}
             />
@@ -56,7 +57,7 @@ function LoginPage() {
             <input
               type="password"
               placeholder="Password"
-              required
+              //required
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
             />
