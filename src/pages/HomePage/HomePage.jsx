@@ -4,6 +4,7 @@ import TopBar from "../../components/TopBar/TopBar";
 import TranslationIcon from "../../assets/icons/translation-icon.png";
 import URLIcon from "../../assets/icons/url-icon.png";
 import ChatIcon from "../../assets/icons/chat-icon.png";
+import axios from "axios";
 
 function HomePage() {
   const [input, setInput] = useState("");
@@ -13,11 +14,52 @@ function HomePage() {
     setInput(e.target.value);
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
-    setMessages([...messages, { sender: "user", text: input }]);
+    setMessages([
+      ...messages,
+      { sender: "user", text: input, role: "user", content: input },
+    ]);
     setInput("");
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/webbrowsing", {
+        query: input,
+        history: messages,
+        max_tokens: 128000, //to be calculated based on query
+        model: "gpt-4o-mini", //TBC if the user can choose the model
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin":
+            "https://dxcfrontend2.azurewebsites.net",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        },
+      });
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "system",
+          text: response.data,
+          role: "assistant",
+          content: input,
+        },
+      ]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "system",
+          text: error.messages,
+          role: "assistant",
+          content: input,
+        },
+      ]);
+    }
   };
 
   return (
@@ -58,10 +100,7 @@ function HomePage() {
             </div>
           </div>
 
-          <form
-            onSubmit={handleSend}
-            className="textbox"
-          >
+          <form onSubmit={handleSend} className="textbox">
             <input
               type="text"
               className="inputbox"
@@ -105,10 +144,7 @@ function HomePage() {
             </div>
           </div>
 
-          <form
-            onSubmit={handleSend}
-            className="textbox"
-          >
+          <form onSubmit={handleSend} className="textbox">
             <input
               type="text"
               className="inputbox"
