@@ -3,7 +3,7 @@ import axios from 'axios';
 // import { Oval } from 'react-loader-spinner'; // Importing the spinner
 import './Rag.css';
 import { useNavigate } from "react-router-dom";
-import Dropzone from "./DropZone"; // Ensure this path is correct
+import Dropzone from "../../components/DropZone/DropZone"; // Ensure this path is correct
 //import { auth } from "../Firebase";
 import TopBar from "../../components/TopBar/TopBar";
 

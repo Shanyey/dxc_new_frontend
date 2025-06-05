@@ -85,6 +85,9 @@ function TopBar() {
               <Dropdown.Item eventKey="Real-Time Web Search Chat" href="/chat">
                 Real-Time Web Search Chat
               </Dropdown.Item>
+              <Dropdown.Item eventKey="CV Analyser" href="/cv">
+                CV Analyser
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
