@@ -42,6 +42,10 @@ function TopBar() {
       setSelectedItem("RAG");
     } else if (path.includes("/chat")) {
       setSelectedItem("Real-Time Web Search Chat");
+    } else if (path.includes("/cv")) {
+      setSelectedItem("CV Analyser");
+    } else if (path.includes("/gradesanalyser")) {
+      setSelectedItem("Grades Analyser");
     } else {
       setSelectedItem("Home");
     }
@@ -87,6 +91,9 @@ function TopBar() {
               </Dropdown.Item>
               <Dropdown.Item eventKey="CV Analyser" href="/cv">
                 CV Analyser
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
+                Grades Analyser
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

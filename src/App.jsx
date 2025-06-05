@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import BFQPage from "./pages/BatchFileQueryPage/BFQPage"
 import RAGPage from "./pages/RAG/RAG"
 import CVAnalyser from "./pages/CV/CVAnalyserPage"
+import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/batchfilequery" element={<BFQPage />} />
         <Route path="/RAG" element={<RAGPage />} />
         <Route path="/cv" element={<CVAnalyser />} />
+        <Route path="/gradesanalyser" element={<GradesAnalyser />} />
       </Routes>
     </Router>
   );
