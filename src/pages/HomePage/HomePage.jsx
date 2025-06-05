@@ -125,19 +125,19 @@ function HomePage() {
                 <div
                   key={index}
                   className={`d-flex ${
-                    msg.sender === "user"
+                    msg.role === "user"
                       ? "justify-content-end"
                       : "justify-content-start"
                   }`}
                 >
                   <div
                     className={`message-bubble ${
-                      msg.sender === "user"
+                      msg.role === "user"
                         ? "bg-primary text-white"
                         : "bg-secondary text-white"
                     }`}
                   >
-                    {msg.text}
+                    {msg.content}
                   </div>
                 </div>
               ))}
