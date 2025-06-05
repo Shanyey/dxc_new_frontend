@@ -5,6 +5,7 @@ import TranslationIcon from "../../assets/icons/translation-icon.png";
 import URLIcon from "../../assets/icons/url-icon.png";
 import ChatIcon from "../../assets/icons/chat-icon.png";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 function HomePage() {
   const [input, setInput] = useState("");
@@ -45,7 +46,7 @@ function HomePage() {
           sender: "system",
           text: response.data,
           role: "assistant",
-          content: input,
+          content: response.data,
         },
       ]);
     } catch (error) {
@@ -56,7 +57,7 @@ function HomePage() {
           sender: "system",
           text: error.messages,
           role: "assistant",
-          content: input,
+          content: error.message,
         },
       ]);
     }
@@ -136,7 +137,7 @@ function HomePage() {
                       : "bg-secondary text-white"
                   }`}
                 >
-                  {msg.content}
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
               </div>
             ))}

@@ -36,11 +36,13 @@
     margin-top: 190px;
 }
   
-.message-bubble {
+.message-bubble, .message-bubble * {
     max-width: 80%;
     padding: 10px 15px;
     border-radius: 20px;
     word-break: break-word;
+    color: #fff;
+    min-width: 60px;
 }
 
 .welcome{
