@@ -118,30 +118,28 @@ function HomePage() {
           </form>
         </div>
       ) : (
-        <>
-          <div className="container-fluid flex-grow-1 overflow-auto p-4">
-            <div className="d-flex flex-column gap-3">
-              {messages.map((msg, index) => (
+        <div className="container-fluid p-4">
+          <div className="messages-container">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`d-flex ${
+                  msg.role === "user"
+                    ? "justify-content-end"
+                    : "justify-content-start"
+                }`}
+              >
                 <div
-                  key={index}
-                  className={`d-flex ${
+                  className={`message-bubble ${
                     msg.role === "user"
-                      ? "justify-content-end"
-                      : "justify-content-start"
+                      ? "bg-primary text-white"
+                      : "bg-secondary text-white"
                   }`}
                 >
-                  <div
-                    className={`message-bubble ${
-                      msg.role === "user"
-                        ? "bg-primary text-white"
-                        : "bg-secondary text-white"
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
+                  {msg.content}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
 
           <form onSubmit={handleSend} className="textbox">
@@ -160,7 +158,7 @@ function HomePage() {
               Send
             </button>
           </form>
-        </>
+        </div>
       )}
     </div>
   );
