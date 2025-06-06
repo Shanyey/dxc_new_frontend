@@ -37,8 +37,8 @@
 }
   
 .message-bubble, .message-bubble * {
-    max-width: 80%;
-    padding: 10px 15px;
+    max-width: 100%;
+    padding: 5px 10px;
     border-radius: 20px;
     color: #fff;
     word-wrap: break-word;
