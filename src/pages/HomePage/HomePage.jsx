@@ -73,27 +73,27 @@ function HomePage() {
               <p className="welcome">Welcome to DXC</p>
               <p className="text-muted">What would you like to do today?</p>
               <p>Home can handle:</p>
-              <div className="cards">
-                <div className="card">
-                  <div className="card-body">
+              <div className="homecards">
+                <div className="homecard">
+                  <div className="homecard-body">
                     <img src={ChatIcon} className="logo" alt="Chat" />
-                    <p className="card-text">Chat</p>
+                    <p className="homecard-text">Chat</p>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-body">
+                <div className="homecard">
+                  <div className="homecard-body">
                     <img
                       src={TranslationIcon}
                       className="logo"
                       alt="Translation"
                     />
-                    <p className="card-text">Translation</p>
+                    <p className="homecard-text">Translation</p>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-body">
+                <div className="homecard">
+                  <div className="homecard-body">
                     <img src={URLIcon} className="logo" alt="URL Query" />
-                    <p className="card-text">URL Query</p>
+                    <p className="homecard-text">URL Query</p>
                   </div>
                 </div>
               </div>
