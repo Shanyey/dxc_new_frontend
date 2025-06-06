@@ -5,6 +5,7 @@ import TranslationIcon from "../../assets/icons/translation-icon.png";
 import URLIcon from "../../assets/icons/url-icon.png";
 import ChatIcon from "../../assets/icons/chat-icon.png";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 function HomePage() {
   const [input, setInput] = useState("");
@@ -17,10 +18,7 @@ function HomePage() {
   const handleSend = async (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
-    setMessages([
-      ...messages,
-      { sender: "user", text: input, role: "user", content: input },
-    ]);
+    setMessages([...messages, { role: "user", content: input }]);
     setInput("");
 
     try {
@@ -42,21 +40,22 @@ function HomePage() {
       setMessages((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: response.data,
+          // sender: "system",
+          // text: response.data,
           role: "assistant",
-          content: input,
+          content: response.data,
         },
       ]);
+      console.log("Content:", response.data);
     } catch (error) {
       console.error("Error sending message:", error);
       setMessages((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: error.messages,
+          // sender: "system",
+          // text: error.messages,
           role: "assistant",
-          content: input,
+          content: error.message,
         },
       ]);
     }
@@ -136,7 +135,7 @@ function HomePage() {
                       : "bg-secondary text-white"
                   }`}
                 >
-                  {msg.content}
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
               </div>
             ))}
