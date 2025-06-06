@@ -18,10 +18,7 @@ function HomePage() {
   const handleSend = async (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
-    setMessages([
-      ...messages,
-      { sender: "user", text: input, role: "user", content: input },
-    ]);
+    setMessages([...messages, { role: "user", content: input }]);
     setInput("");
 
     try {
@@ -43,19 +40,20 @@ function HomePage() {
       setMessages((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: response.data,
+          // sender: "system",
+          // text: response.data,
           role: "assistant",
           content: response.data,
         },
       ]);
+      console.log("Content:", response.data);
     } catch (error) {
       console.error("Error sending message:", error);
       setMessages((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: error.messages,
+          // sender: "system",
+          // text: error.messages,
           role: "assistant",
           content: error.message,
         },
