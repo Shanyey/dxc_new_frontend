@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import "./HomePage.css";
+import "./Chat.css";
 import TopBar from "../../components/TopBar/TopBar";
-import TranslationIcon from "../../assets/icons/translation-icon.png";
-import URLIcon from "../../assets/icons/url-icon.png";
-import ChatIcon from "../../assets/icons/chat-icon.png";
+import SendIcon from "../../assets/icons/send-icon.png";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 
 function HomePage() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const fileInputRef = React.useRef();
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -61,6 +60,19 @@ function HomePage() {
     }
   };
 
+  const handlePlusClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    // Handle file selection here
+    const file = e.target.files[0];
+    if (file) {
+      // Do something with the file
+      console.log("Selected file:", file);
+    }
+  };
+
   return (
     <div className="page">
       <TopBar />
@@ -75,22 +87,42 @@ function HomePage() {
           </div>
 
           <form onSubmit={handleSend} className="textbox">
-            <input
-              type="text"
-              className="inputbox"
-              value={input}
-              onChange={handleChange}
-              placeholder="Type a message..."
-            />
-            <button
-              className="btn btn-primary rounded-pill"
-              type="submit"
-              disabled={input.trim() === ""}
-            >
-              Send
-            </button>
+            <div className="chatgpt">
+              <textarea
+                rows="1"
+                className="inputbox"
+                value={input}
+                onChange={handleChange}
+                placeholder="Type a message..."
+              />
+              <div className="buttons">
+                <button
+                  type="button"
+                  className="plus"
+                  onClick={handlePlusClick}
+                  title="Attach file"
+                >
+                  +
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+                <button
+                  className="submit btn rounded-pill"
+                  type="submit"
+                >
+                  <img src={SendIcon} alt="Send" className="send-icon" />
+                </button>
+              </div>
+            </div>
           </form>
-          <p className="warning">This webpage is hosted on the public internet domain. Please do not query anything sensitive.</p>
+          <p className="warning">
+            This webpage is hosted on the public internet domain. Please do not
+            query anything sensitive.
+          </p>
         </div>
       ) : (
         <div className="container-fluid p-4">
@@ -118,22 +150,44 @@ function HomePage() {
           </div>
 
           <form onSubmit={handleSend} className="textbox">
-            <input
-              type="text"
-              className="inputbox"
-              value={input}
-              onChange={handleChange}
-              placeholder="Type a message..."
-            />
-            <button
-              className="btn btn-primary rounded-pill"
-              type="submit"
-              disabled={input.trim() === ""}
-            >
-              Send
-            </button>
+            <div className="chatgpt">
+              <textarea
+                rows="1"
+                className="inputbox"
+                value={input}
+                onChange={handleChange}
+                placeholder="Type a message..."
+              />
+              <div className="buttons">
+                <button
+                  type="button"
+                  className="plus"
+                  onClick={handlePlusClick}
+                  title="Attach file"
+                >
+                  +
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+                <button
+                  className="submit btn rounded-pill"
+                  type="submit"
+                >
+                  <img src={SendIcon} alt="Send" className="send-icon" />
+                </button>
+              </div>
+            </div>
           </form>
+          <p className="warning">
+            This webpage is hosted on the public internet domain. Please do not
+            query anything sensitive.
+          </p>
         </div>
+        
       )}
     </div>
   );

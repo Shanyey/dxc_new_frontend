@@ -3,7 +3,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import ResetPage from "./pages/ResetPage/ResetPage";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
+import HomePage from "./pages/Chat/Chat";
 import BFQPage from "./pages/BatchFileQueryPage/BFQPage"
 import RAGPage from "./pages/RAG/RAG"
 import CVAnalyser from "./pages/CV/CVAnalyserPage"
