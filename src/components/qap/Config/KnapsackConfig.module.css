@@ -1,0 +1,45 @@
+.items{
+    overflow:hidden;
+}
+
+.items > p{
+    margin:0.4rem 0;
+}
+
+.itemId{
+    margin:0 0.6rem;
+    color: #6c2cad;
+    font-weight: 500;
+    min-width: 3rem;
+}
+
+.inlineContainer{
+    display:flex;
+    align-items: center;
+    margin-bottom:1.3rem;
+}
+
+.inlineContainer > h4{
+    font-weight:500;
+    margin-top:0;
+    margin-bottom:0;
+    margin-right: 0.5rem;
+}
+
+.inlineContainer > p{
+    margin-top: 0;
+    margin-bottom:0;
+}
+
+.itemContainer{
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin:0.3rem 0;
+}
+
+.itemDescription {
+    margin:0;
+    margin-right: 0.5rem;
+    min-width: 5.5rem;
+}

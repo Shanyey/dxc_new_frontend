@@ -1,0 +1,37 @@
+.itemInputs{
+    display:flex;
+    margin: 0;
+    height: auto; 
+    width: 100%;
+    
+}
+
+.itemInputs > input{
+    margin-right: 0.35rem;
+}
+
+.itemInputs > button{
+    margin-right:0;
+    max-width: 100%;
+    
+}
+
+.maxWeightInput{
+    height: 2.7rem;
+}
+
+@media(max-width:768px){
+    .itemInputs{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .itemInputs > input{
+        margin-right:0;
+        margin-bottom:0.3rem;
+    }
+
+    .itemInputs > button {
+        width:100%;
+    }
+}

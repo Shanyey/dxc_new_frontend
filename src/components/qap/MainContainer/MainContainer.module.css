@@ -1,0 +1,13 @@
+.mainContainer{
+    border: 1px solid plum;
+    border-radius: 0.7rem;
+    padding: 1.5rem 2.5rem;
+    width:70%;
+    overflow: hidden;
+}
+
+@media(max-width:768px){
+    .mainContainer{
+        width:90%;
+    }
+}

@@ -1,0 +1,105 @@
+.intro{
+    color:rgb(54, 1, 87);
+}
+
+.showMoreBtn{
+    background-color: transparent;
+    border:none;
+    color: #a172bf;
+    text-align: center;
+    font-size: 13px;  
+    cursor: pointer; 
+    box-shadow: none;
+    padding:0;
+}
+
+.technicalExplanation{
+    font-style: italic;
+    margin-right: 0.3rem;
+}
+
+.arrow{
+    font-size:11px;
+}
+.problemContainer > h3{
+    margin:1.5rem;
+}
+
+.problemContainer h4{
+    margin:1rem 0 0rem;
+}
+
+.problemContainer > ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.problemContainer li{
+    margin:0 0 2rem;
+}
+
+.problemContainer > img {
+    border: 1px solid grey;
+    border-radius: 0.3rem;
+    padding:1rem;
+}
+
+.problemContainer p {
+    margin-bottom: 2rem;
+    width:65%;
+    margin: 1rem auto;
+}
+
+.problemContainer{
+    padding-top:1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.408);
+    box-shadow: 0 3px 6px -3px rgba(0,0,0,0.1), 0 2px 3px -3px rgba(0, 0, 0, 0.5);
+}
+
+.graphPartitionGoodImg, .graphPartitionBadImg{
+    width:25rem;
+    margin: 0.5rem;
+}
+
+.imgContainer > img{
+    border:none;
+}
+
+.imgContainer{
+    border-radius: 0.3rem;
+    border: 1px solid grey;
+    overflow: hidden;
+    width:25rem;
+    padding:1rem;
+    height:17rem;
+    margin:0 auto;
+}
+
+.tspImg{
+    position:center;
+    width:35rem;
+    transform:translate(-77px, -65px);
+}
+
+.maxCutImg, .cliqueImg, .stableSetImg, .vertexCoverImg{
+    width:25rem;
+    margin:1rem 0;
+}
+
+.exactCoverImg1, .exactCoverImg2, .exactCoverImg3{
+    width:22rem;
+    margin:0.5rem 1rem;
+}
+
+.numberPartitionImg{
+    width:50rem;
+    margin: 1rem 0;
+}
+
+.tryIt{
+    font-style: italic;
+    font-size: 0.9rem;
+    color:rgb(83, 83, 83)
+}

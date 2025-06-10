@@ -1,0 +1,15 @@
+.qapBaseFont{
+font-family: "Poppins", sans-serif;
+}
+
+.qapBaseLabel {
+display: block;
+margin-bottom: 5px;
+}
+
+.qapBaseInput {
+width: 100%;
+padding: 0.5rem;
+border: 1px solid #ddd;
+border-radius: 4px;
+}

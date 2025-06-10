@@ -1,0 +1,20 @@
+.subsetContainer{
+    border-radius: 0.5rem;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    margin-bottom:1rem;
+}
+
+
+.exactCoverForm ul {
+    list-style-type: none;
+    padding-left:0;
+}
+
+.subsetList{
+    width:100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+

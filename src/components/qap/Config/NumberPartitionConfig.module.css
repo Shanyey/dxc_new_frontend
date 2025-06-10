@@ -1,0 +1,10 @@
+.numberPartitionForm ul {
+    list-style-type: none;
+    padding-left:0;
+}
+
+.subsetList{
+    width:100%;
+    margin: 0 auto;
+    overflow: hidden;
+}

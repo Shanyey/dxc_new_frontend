@@ -1,0 +1,47 @@
+.configurationSection{
+    padding-bottom: 0.5rem;
+}
+
+.sectionHeader{
+    margin-top:0;
+}
+
+.addItemsContainer{
+    border-radius: 0.5rem;
+    background-color: #f0f0f0;
+    padding: 0.2rem;
+    margin-bottom: 1rem;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow:hidden;
+}
+
+.addItemsContainer > h4{
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.addItemsContainer > ul{
+    list-style-type: none;
+    padding-left: 0;
+    width:60%;
+}
+
+.addItemsContainer > ul > li{
+    margin: 0.2rem 0;
+    padding: 0.5rem 0rem 0.5rem 0.5rem;
+    border-radius: 0.3rem;
+    background-color:rgb(228, 215, 235);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+}
+
+.instruction{
+    color:rgb(121, 120, 120)
+}
+
+

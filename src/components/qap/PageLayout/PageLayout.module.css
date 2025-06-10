@@ -1,0 +1,12 @@
+.layout{
+    display:flex;
+}
+
+.content{
+    margin:0 20px;
+    padding:24px;
+    text-align: center;
+    min-height:100vh;
+    background-color: white;
+    width:100vw
+}

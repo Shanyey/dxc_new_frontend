@@ -1,0 +1,26 @@
+.introSection{
+    width:70%;
+}
+
+.documentation{
+    font-style: italic;
+    font-size:0.9rem;
+    color:rgb(107, 107, 107)
+}
+
+.documentation > a{
+    color:rgba(137, 43, 226, 0.767);
+    transition: color 0.3s ease;
+}
+
+.documentation > a:hover {
+  color: #8400f8; /* Brighter purple for hover */
+}
+
+
+@media(max-width:768px){
+    .introSection{
+        width:90%;
+    }
+}
+
