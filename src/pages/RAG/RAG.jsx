@@ -149,9 +149,7 @@ const RagPage = () => {
       <TopBar />
       <div className="container-fluid p-4">
         <h1 className="title">Retrieval Augmented Generation</h1>
-        <p className="ragDescription">Upload your .pdf or .txt documents and chat.</p>
-        <p className="ragDescription">RAG helps AI provide better answers by looking at your documents before responding</p>
-        
+       
         <div className="upload-section">
           <Dropzone 
             acceptedFileTypes={['application/pdf', 'text/plain']} 

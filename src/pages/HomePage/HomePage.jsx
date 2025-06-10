@@ -71,31 +71,6 @@ function HomePage() {
             <div>
               <p className="welcome">Welcome to DXC</p>
               <p className="text-muted">What would you like to do today?</p>
-              <p>Home can handle:</p>
-              <div className="homecards">
-                <div className="homecard">
-                  <div className="homecard-body">
-                    <img src={ChatIcon} className="logo" alt="Chat" />
-                    <p className="homecard-text">Chat</p>
-                  </div>
-                </div>
-                <div className="homecard">
-                  <div className="homecard-body">
-                    <img
-                      src={TranslationIcon}
-                      className="logo"
-                      alt="Translation"
-                    />
-                    <p className="homecard-text">Translation</p>
-                  </div>
-                </div>
-                <div className="homecard">
-                  <div className="homecard-body">
-                    <img src={URLIcon} className="logo" alt="URL Query" />
-                    <p className="homecard-text">URL Query</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -115,6 +90,7 @@ function HomePage() {
               Send
             </button>
           </form>
+          <p className="warning">This webpage is hosted on the public internet domain. Please do not query anything sensitive.</p>
         </div>
       ) : (
         <div className="container-fluid p-4">

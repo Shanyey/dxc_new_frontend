@@ -47,29 +47,9 @@
 .welcome{
     font-weight: bold;
     font-size: 50px;
-    margin-bottom: 0px
-}
-
-.homecards{
-    text-align: center;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4;
-}
-
-.homecard-text{
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.homecard{
-    background-color:white;
-    border: 1px solid #ced4da;
-    padding: 20px;
-    width: 288px;
-    margin: 5px;
+    margin-bottom: 0px;
+    margin-top: 30%;
+    color:black
 }
 
 .textbox {
@@ -94,4 +74,9 @@
     border: 1px solid #ced4da;
     border-radius: 50rem; 
     margin-right: 0.5rem;
+}
+
+.warning{
+    text-align: center;
+    color: red
 }

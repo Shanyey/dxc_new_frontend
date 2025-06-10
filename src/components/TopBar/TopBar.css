@@ -7,6 +7,7 @@
     z-index: 1000;
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
 }
 
 .header {
@@ -15,40 +16,35 @@
     margin: 0;
     padding: 0.5rem 2rem;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; 
+    gap: 2rem;           
 }
 
 .DXC_Logo {
     display: flex;
     align-items: center;
-    flex: 1;
 }
 
 .dropdown {
-    flex: 2;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
 .general {
     display: flex;
-    gap: 1.5rem;
     align-items: center;
-    flex: 1;
-    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-left: auto; 
 }
 
-.general > div {
+.wide-link {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.general a {
-    text-decoration: none;
-    color: #333;
+.wide-link:hover {
+    background: #e0e0e0;
 }
 
 .img-fluid {

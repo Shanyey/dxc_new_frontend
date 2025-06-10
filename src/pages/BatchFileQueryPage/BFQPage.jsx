@@ -147,14 +147,8 @@ function BatchFileQueryPage() {
         <div className="batchfilequery-main-content">
             <div className="BFQIntro">
                 <h2>
-                    Batch File Query can handle
+                    Batch File Query
                 </h2>
-                <ul>
-                    <li>Summary of Batch Files</li>
-                    <li>Extract Keywords</li>
-                    <li>Translate</li>
-                    <li>Personalise Prompt</li>
-                </ul>
             </div>
 
           <div className="select-container">

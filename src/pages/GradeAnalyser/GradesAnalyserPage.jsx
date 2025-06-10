@@ -81,7 +81,6 @@ const GradesAnalyser = () => {
         <TopBar />
         <div className="container-fluid p-4">
             <h1 className="title">Grades Analyser</h1>
-            <p className="description">Extract transcript files into Excel file for further reviews. More than 1 transcript can be uploaded.</p>
             
             <div className="upload-section">
                 <div className="upload-container">

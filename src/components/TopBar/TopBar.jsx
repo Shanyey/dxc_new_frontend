@@ -28,32 +28,9 @@ function TopBar() {
     setSelectedItem(eventKey);
   };
 
-  const location = useLocation();
-  const basePath = location.pathname.replace(/\/$/, "");
-
-  // Set initial selected item based on current path
-  useEffect(() => {
-    const path = location.pathname;
-    if (path.includes("/batchfilequery")) {
-      setSelectedItem("Batch File Query");
-    } else if (path.includes("/AIRA")) {
-      setSelectedItem("AIRA");
-    } else if (path.includes("/RAG")) {
-      setSelectedItem("RAG");
-    } else if (path.includes("/chat")) {
-      setSelectedItem("Real-Time Web Search Chat");
-    } else if (path.includes("/cv")) {
-      setSelectedItem("CV Analyser");
-    } else if (path.includes("/gradesanalyser")) {
-      setSelectedItem("Grades Analyser");
-    } else {
-      setSelectedItem("Home");
-    }
-  }, [location]);
-
   return (
     <div className="home-page">
-      <div className="header d-flex justify-content-between align-items-center p-3">
+      <div className="header p-3">
         <div className="DXC_Logo">
           <img
             src={DXCLogo}
@@ -69,13 +46,11 @@ function TopBar() {
               id="dropdown-basic"
               className="btn btn-primary"
             >
-              {selectedItem}
+              Tools
             </Dropdown.Toggle>
-
-            {/*To add on whenever there are new features*/}
             <Dropdown.Menu>
-              <Dropdown.Item eventKey="Home" href="/home">
-                Home
+              <Dropdown.Item eventKey="Home" href="/chat">
+                Chat
               </Dropdown.Item>
               <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
                 Batch File Query
@@ -85,9 +60,6 @@ function TopBar() {
               </Dropdown.Item>
               <Dropdown.Item eventKey="RAG" href="/RAG">
                 RAG
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="Real-Time Web Search Chat" href="/chat">
-                Real-Time Web Search Chat
               </Dropdown.Item>
               <Dropdown.Item eventKey="CV Analyser" href="/cv">
                 CV Analyser
@@ -99,16 +71,14 @@ function TopBar() {
           </Dropdown>
         </div>
         <div className="general">
-          <div>
+          <a href={"/"} onClick={handleSignOut} className="wide-link">
             <img src={SettingsIcon} alt="Settings" className="img-fluid" />
-            <a href={"/"} onClick={handleSignOut}>
-              Sign Out
-            </a>
-          </div>
-          <div>
-            <img src={UserManual} alt="Settings" className="img-fluid" />
-            <a href="/userguide">User Guide</a>
-          </div>
+            Sign Out
+          </a>
+          <a href="/userguide" className="wide-link">
+            <img src={UserManual} alt="User Guide" className="img-fluid" />
+            User Guide
+          </a>
         </div>
       </div>
     </div>

@@ -97,7 +97,6 @@ const CVAnalyser = () => {
       <TopBar />
       <div className="container-fluid p-4">
         <h1 className="title">CV Analyser</h1>
-        <p className="description">Analyse and generate a score for uploaded CVs against different Job Description files.</p>       
         <div className="upload-section">
           <div className="upload-container">
             <div className="upload-box">
