@@ -1,0 +1,78 @@
+.results-text, .url-text, .upload-text, .query-text {
+    font-size: large;
+    font-weight: bold;
+    color: #000000;
+}
+
+.results-display{
+    margin-top: 20px;
+    margin-left: 5%;
+}
+
+
+.results-number {
+    height: 30px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+
+.url{
+    margin-left: 7%;
+}
+
+.inputboxes{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.url-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-top: 0.5%;
+    height: 35px;
+    margin-bottom: 0.5%;
+}
+
+.add-button{
+    font-size: 2rem;
+    padding: 0.2rem;
+    margin-left: 0.5rem; 
+    cursor: pointer;
+    border: 0;
+    background-color: #f8f8f8;
+}
+
+.query-container{
+    max-width: 700px;
+    margin-top: 10px;
+    margin-left: 7%
+}
+
+.query-input {
+    display: flex;
+    align-items: center;
+    width: 130%;
+}
+
+
+.drop-zone {
+    grid-row: 4 / 11;
+    grid-column: 2 / 5;
+    overflow-y: auto;
+    margin-top: 20px;
+    margin-left: 7%;
+}
+
+.status-message {
+    grid-row: 1 / 2;
+    grid-column: 2 / 5;
+    justify-self: center;
+    align-self: start;
+    font-weight: bold;
+    font-size: 1rem;
+}

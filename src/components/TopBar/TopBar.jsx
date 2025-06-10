@@ -55,7 +55,7 @@ function TopBar() {
               <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
                 Batch File Query
               </Dropdown.Item>
-              <Dropdown.Item eventKey="AIRA" href="/AIRA">
+              <Dropdown.Item eventKey="AIRA" href="/AIRA/input">
                 AIRA
               </Dropdown.Item>
               <Dropdown.Item eventKey="RAG" href="/RAG">
