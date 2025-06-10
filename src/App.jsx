@@ -4,13 +4,13 @@ import ResetPage from "./pages/ResetPage/ResetPage";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Chat/Chat";
-import BFQPage from "./pages/BatchFileQueryPage/BFQPage"
-import RAGPage from "./pages/RAG/RAG"
-import CVAnalyser from "./pages/CV/CVAnalyserPage"
-import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage"
-import AIRAInputQuery from "./pages/AIRA/AIRA_InputQuery";
-import AIRAAnalyseData from "./pages/AIRA/AIRA_AnalyseData";
-import AIRAGenerate from "./pages/AIRA/AIRA_Generate";
+import BFQPage from "./pages/BatchFileQueryPage/BFQPage";
+import RAGPage from "./pages/RAG/RAG";
+import CVAnalyser from "./pages/CV/CVAnalyserPage";
+import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage";
+// import AIRAInputQuery from "./pages/AIRA/AIRA_InputQuery";
+// import AIRAAnalyseData from "./pages/AIRA/AIRA_AnalyseData";
+// import AIRAGenerate from "./pages/AIRA/AIRA_Generate";
 
 function App() {
   return (
@@ -23,9 +23,9 @@ function App() {
         <Route path="/RAG" element={<RAGPage />} />
         <Route path="/cv" element={<CVAnalyser />} />
         <Route path="/gradesanalyser" element={<GradesAnalyser />} />
-        <Route path="/AIRA/input" element={<AIRAInputQuery />} />
+        {/* <Route path="/AIRA/input" element={<AIRAInputQuery />} />
         <Route path="/AIRA/analyse" element={<AIRAAnalyseData />} />
-        <Route path="/AIRA/generate" element={<AIRAGenerate />} />
+        <Route path="/AIRA/generate" element={<AIRAGenerate />} /> */}
         {/* Add more routes as needed */}
       </Routes>
     </Router>

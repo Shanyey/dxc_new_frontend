@@ -14,7 +14,7 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/home", { replace: true });
+    navigate("/chat", { replace: true });
     // try {
     //   const userCredentials = signInWithEmailAndPassword(auth, email, password);
     //   const user = userCredentials.user;
