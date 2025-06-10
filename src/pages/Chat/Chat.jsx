@@ -42,10 +42,12 @@ function HomePage() {
           // sender: "system",
           // text: response.data,
           role: "assistant",
-          content: response.data,
+          content: response.data.output,
+          image_base64: response.data.image_base64,
         },
       ]);
-      console.log("Content:", response.data);
+      console.log("Content:", response.data.output);
+      console.log("image:", response.data.image_base64);
     } catch (error) {
       console.error("Error sending message:", error);
       setMessages((prev) => [
@@ -110,10 +112,7 @@ function HomePage() {
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />
-                <button
-                  className="submit btn rounded-pill"
-                  type="submit"
-                >
+                <button className="submit btn rounded-pill" type="submit">
                   <img src={SendIcon} alt="Send" className="send-icon" />
                 </button>
               </div>
@@ -144,6 +143,15 @@ function HomePage() {
                   }`}
                 >
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  <img
+                    src={`data:image/png;base64,${msg.image_base64}`}
+                    alt="result"
+                    style={{
+                      maxWidth: "100%",
+                      marginTop: "10px",
+                      borderRadius: "10px",
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -173,10 +181,7 @@ function HomePage() {
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />
-                <button
-                  className="submit btn rounded-pill"
-                  type="submit"
-                >
+                <button className="submit btn rounded-pill" type="submit">
                   <img src={SendIcon} alt="Send" className="send-icon" />
                 </button>
               </div>
@@ -187,7 +192,6 @@ function HomePage() {
             query anything sensitive.
           </p>
         </div>
-        
       )}
     </div>
   );
