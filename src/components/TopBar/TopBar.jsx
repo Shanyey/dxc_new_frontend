@@ -67,6 +67,9 @@ function TopBar() {
               <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
                 Grades Analyser
               </Dropdown.Item>
+              <Dropdown.Item eventKey="QAP" href="/qap">
+                QAP
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
