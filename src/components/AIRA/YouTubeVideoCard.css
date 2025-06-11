@@ -1,0 +1,24 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+    background-color: #7c5c5c; /* Light background color for contrast */
+
+  }
+
+.card-content {
+    flex-grow: 1;
+    padding-left: 20px;
+    width: 100%;
+  }
+
+.video {
+  max-width: 300px;
+}
+
+.accordion-card {
+  width: 100%;
+}
