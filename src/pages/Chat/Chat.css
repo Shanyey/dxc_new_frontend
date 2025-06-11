@@ -13,9 +13,9 @@
     padding: 0 2rem;
 }
 
-#root{
+/* #root{
     width: 70%
-}
+} */
 
 .messages-container {
     flex-grow: 1;

@@ -5,7 +5,7 @@ export default function Sidebar(){
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
-                <Link to="/">QAP</Link>
+                <Link to="/qap">QAP</Link>
             </div>
             <nav className={styles.nav}>
                 <h4>Graph Problems</h4>

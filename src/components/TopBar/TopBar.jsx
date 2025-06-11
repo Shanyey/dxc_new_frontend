@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import "./TopBar.css";
 import SettingsIcon from "../../assets/icons/settings.png";
 import UserManual from "../../assets/icons/user-manual.png";
