@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // temporarily disable
 // import { auth } from "../Firebase";
-import "./AIRA.css";
 import DeepResearchInput from "../../components/AIRA/AIRA_InputQuery";
 import DeepInsightsDisplay from "../../components/AIRA/DeepInsightsDisplay";
 import DocumentsDisplay from "../../components/AIRA/DocumentsDisplay";
