@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './CVAnalyserPage.css';
-import Dropzone from '../../components/DropZone/DropZone.jsx';
-//Temporarily disabled
+import React, { useState, useEffect } from "react";
+import "./CVAnalyserPage.css";
+import Dropzone from "../../components/DropZone/DropZone.jsx";
 //import { auth } from '../Firebase';
-import { NavLink, useNavigate } from "react-router-dom";
 import TopBar from "../../components/TopBar/TopBar";
+import axios from "axios";
 
 const CVAnalyser = () => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const navigate = useNavigate();
+  //const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const [cvFiles, setCvFiles] = useState([]);
   const [jobFiles, setJobFiles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState();
-  const [uploadStatus, setUploadStatus] = useState('');
-  
+  //const [userInfo, setUserInfo] = useState();
+  const [uploadStatus, setUploadStatus] = useState("");
+
   //Temporarily disabled
   /*
   useEffect(() => {
@@ -33,60 +31,60 @@ const CVAnalyser = () => {
   }, []);
   */
 
-  // const handleCvFilesAdded = (files) => {
-  //   setCvFiles(files);
-  // }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  // const handleJdFilesAdded = (files) => {
-  //   setJobFiles(files);
-  // }
-
-  // Submit the files to the backend
-  const handleSubmit = async () => {
     if (cvFiles.length === 0 || jobFiles.length === 0) {
-      alert('Please upload both CVs and Job descriptions.');
+      alert("Please upload both CVs and Job descriptions.");
       return;
     }
 
+    //create a FormData object to hold the files
     const formData = new FormData();
     cvFiles.forEach((file) => {
-      formData.append('resumes', file);
+      formData.append("resumes", file);
     });
-
     jobFiles.forEach((file) => {
-      formData.append('jobs', file);
+      formData.append("jobs", file);
     });
 
     try {
       setLoading(true);
-      setUploadStatus('Processing files...');
+      setUploadStatus("Processing files...");
 
-      const response = await fetch(`${baseUrl}/resume`, {
-        method: 'POST',
-        body: formData,
+      // Send the files to the backend
+      const response = await axios.post("http://127.0.0.1:5000/cv", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "blob", // If you expect a file (like Excel) in response
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const blob = await response.blob();
-      const fileName = response.headers.get('Content-Disposition')
+      //download & process the file
+      const blob = new Blob([response.data]);
+      const disposition = response.headers["content-disposition"];
+      const fileName = disposition
         ? response.headers
-            .get('Content-Disposition')
-            .split('filename=')[1]
-            .replace(/["]/g, '')
-        : 'CV_analysis.xlsx';
+            .get("Content-Disposition")
+            .split("filename=")[1]
+            .replace(/["]/g, "")
+        : "CV_analysis.xlsx";
 
-      const link = document.createElement('a');
+      // Create a link to download the file
+      const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = fileName;
       link.click();
-      
-      setUploadStatus('Analysis complete! File downloaded.');
+      window.URL.revokeObjectURL(link.href); // Clean up
+
+      setUploadStatus("Analysis complete! File downloaded.");
+
+      // Clear the file inputs
+      setCvFiles([]);
+      setJobFiles([]);
     } catch (error) {
-      console.error('Error submitting files:', error);
-      setUploadStatus('Error processing files. Please try again.');
+      console.error("Error submitting files:", error);
+      setUploadStatus("Error processing files. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -102,16 +100,18 @@ const CVAnalyser = () => {
             <div className="upload-box">
               <h2 className="upload-title">Upload CVs (PDF)</h2>
               <Dropzone
-                acceptedFileTypes={['application/pdf']}
+                acceptedFileTypes={["application/pdf"]}
                 files={cvFiles}
                 setFiles={setCvFiles}
               />
             </div>
-            
+
             <div className="upload-box">
-              <h2 className="upload-title">Upload Job Description Files (PDF)</h2>
+              <h2 className="upload-title">
+                Upload Job Description Files (PDF)
+              </h2>
               <Dropzone
-                acceptedFileTypes={['application/pdf']}
+                acceptedFileTypes={["application/pdf"]}
                 files={jobFiles}
                 setFiles={setJobFiles}
               />
@@ -121,15 +121,18 @@ const CVAnalyser = () => {
           <div className="button-container">
             {(cvFiles.length === 0 || jobFiles.length === 0) && !loading && (
               <p className="disabled-message">
-                Please upload both CV and Job Description files to enable analysis
+                Please upload both CV and Job Description files to enable
+                analysis
               </p>
             )}
-            <button 
-              onClick={handleSubmit} 
+            <button
+              onClick={handleSubmit}
               className="analyse-button"
-              disabled={loading || cvFiles.length === 0 || jobFiles.length === 0}
+              disabled={
+                loading || cvFiles.length === 0 || jobFiles.length === 0
+              }
             >
-              {loading ? 'Processing...' : 'Analyse'}
+              {loading ? "Processing..." : "Analyse"}
             </button>
           </div>
 

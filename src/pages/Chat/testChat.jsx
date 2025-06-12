@@ -15,6 +15,58 @@ function HomePage() {
     setInput(e.target.value);
   };
 
+  {
+    /*}
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (input.trim() === "") return;
+    setMessages([...messages, { role: "user", content: input }]);
+    setInput("");
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/chat", {
+        query: input,
+        history: messages,
+        max_tokens: 128000, //to be calculated based on query
+        model: "gpt-4o-mini", //TBC if the user can choose the model
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin":
+            "https://dxcfrontend2.azurewebsites.net",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        },
+      });
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          // sender: "system",
+          // text: response.data,
+          role: "assistant",
+          content: response.data.output,
+          image_base64: response.data.image_base64,
+        },
+      ]);
+      console.log("Content:", response.data.output);
+      console.log("image:", response.data.image_base64);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          // sender: "system",
+          // text: error.messages,
+          role: "assistant",
+          content: error.message,
+        },
+      ]);
+    }
+  };
+  */
+  }
+
   const handleSend = async (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
@@ -31,49 +83,35 @@ function HomePage() {
         formData.append("files", file);
       });
 
-      const response = await axios.post("http://127.0.0.1:5000/webbrowsing", {
-        query: input,
-        history: messages,
-        max_tokens: 128000, //to be calculated based on query
-        model: "gpt-4o-mini", //TBC if the user can choose the model
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin":
-            "https://dxcfrontend2.azurewebsites.net",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        },
-      });
-
-      console.log("Response:", response.data);
-
+      const response = await axios.post(
+        "http://127.0.0.1:5000/chat",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origin":
+              "https://dxcfrontend2.azurewebsites.net",
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+          },
+        }
+      );
       setMessages((prev) => [
         ...prev,
         {
-          // sender: "system",
-          // text: response.data,
-          role: "assistant",
-          content:
-            typeof response.data === "string"
-              ? response.data
-              : response.data.output,
-          image_base64:
-            typeof response.data === "object" && response.data.image_base64
-              ? response.data.image_base64
-              : undefined,
+          role: "system",
+          content: response.data.output,
+          image_base64: response.data.image_base64,
         },
       ]);
       console.log("Content:", response.data.output);
-      console.log("image:", response.data.image_base64);
+      console.log("Image:", response.data.image_base64);
     } catch (error) {
       console.error("Error sending message:", error);
       setMessages((prev) => [
         ...prev,
         {
-          // sender: "system",
-          // text: error.messages,
-          role: "assistant",
+          role: "system",
           content: error.message,
         },
       ]);
@@ -114,12 +152,6 @@ function HomePage() {
                 value={input}
                 onChange={handleChange}
                 placeholder="Type a message..."
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend(e);
-                  }
-                }}
               />
               <div className="buttons">
                 <button
@@ -166,38 +198,8 @@ function HomePage() {
                       : "bg-secondary text-white"
                   }`}
                 >
-                  {/* <ReactMarkdown>{msg.content}</ReactMarkdown> */}
-                  <div>
-                    {msg.image_base64 && msg.content ? (
-                      <div>
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
-                        <img
-                          src={`data:image/png;base64,${msg.image_base64}`}
-                          alt="result"
-                          style={{
-                            maxWidth: "100%",
-                            marginTop: "10px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </div>
-                    ) : msg.image_base64 ? (
-                      <img
-                        src={`data:image/png;base64,${msg.image_base64}`}
-                        alt="result"
-                        style={{
-                          maxWidth: "100%",
-                          marginTop: "10px",
-                          borderRadius: "10px",
-                        }}
-                      />
-                    ) : msg.content ? (
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
-                    ) : (
-                      <p>No result yet.</p>
-                    )}
-                  </div>
-                  {/* <img
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  <img
                     src={`data:image/png;base64,${msg.image_base64}`}
                     alt="result"
                     style={{
@@ -205,7 +207,7 @@ function HomePage() {
                       marginTop: "10px",
                       borderRadius: "10px",
                     }}
-                  /> */}
+                  />
                 </div>
               </div>
             ))}
@@ -219,12 +221,6 @@ function HomePage() {
                 value={input}
                 onChange={handleChange}
                 placeholder="Type a message..."
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend(e);
-                  }
-                }}
               />
               <div className="buttons">
                 <button
@@ -247,6 +243,10 @@ function HomePage() {
               </div>
             </div>
           </form>
+          <p className="warning">
+            This webpage is hosted on the public internet domain. Please do not
+            query anything sensitive.
+          </p>
         </div>
       )}
     </div>
