@@ -36,14 +36,22 @@ function HomePage() {
         },
       });
 
+      console.log("Response:", response.data);    
+
       setMessages((prev) => [
         ...prev,
         {
           // sender: "system",
           // text: response.data,
           role: "assistant",
-          content: response.data.output,
-          image_base64: response.data.image_base64,
+          content:
+            typeof response.data === "string"
+              ? response.data
+              : response.data.output,
+          image_base64:
+            typeof response.data === "object" && response.data.image_base64
+              ? response.data.image_base64
+              : undefined,
         },
       ]);
       console.log("Content:", response.data.output);
@@ -142,8 +150,38 @@ function HomePage() {
                       : "bg-secondary text-white"
                   }`}
                 >
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  <img
+                  {/* <ReactMarkdown>{msg.content}</ReactMarkdown> */}
+                  <div>
+                    {msg.image_base64 && msg.content? (
+                      <div>
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        <img
+                          src={`data:image/png;base64,${msg.image_base64}`}
+                          alt="result"
+                          style={{
+                          maxWidth: "100%",
+                          marginTop: "10px",
+                          borderRadius: "10px",
+                          }}
+                        />
+                      </div>
+                      ) : msg.image_base64 ? (
+                      <img
+                        src={`data:image/png;base64,${msg.image_base64}`}
+                        alt="result"
+                        style={{
+                          maxWidth: "100%",
+                          marginTop: "10px",
+                          borderRadius: "10px",
+                        }}
+                      />
+                      ) : msg.content ? (
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    ) : (
+                      <p>No result yet.</p>
+                    )}
+                  </div>
+                  {/* <img
                     src={`data:image/png;base64,${msg.image_base64}`}
                     alt="result"
                     style={{
@@ -151,7 +189,7 @@ function HomePage() {
                       marginTop: "10px",
                       borderRadius: "10px",
                     }}
-                  />
+                  /> */}
                 </div>
               </div>
             ))}
@@ -187,10 +225,6 @@ function HomePage() {
               </div>
             </div>
           </form>
-          <p className="warning">
-            This webpage is hosted on the public internet domain. Please do not
-            query anything sensitive.
-          </p>
         </div>
       )}
     </div>
