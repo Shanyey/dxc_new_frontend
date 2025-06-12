@@ -170,22 +170,8 @@ function HomePage() {
                       : "bg-secondary text-white"
                   }`}
                 >
-                  {/* <ReactMarkdown>{msg.content}</ReactMarkdown> */}
                   <div>
-                    {msg.image_base64 && msg.content ? (
-                      <div>
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
-                        <img
-                          src={`data:image/png;base64,${msg.image_base64}`}
-                          alt="result"
-                          style={{
-                            maxWidth: "100%",
-                            marginTop: "10px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </div>
-                    ) : msg.image_base64 ? (
+                    {msg.image_base64 ? (
                       <img
                         src={`data:image/png;base64,${msg.image_base64}`}
                         alt="result"
