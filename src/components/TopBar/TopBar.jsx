@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./TopBar.css";
 import SettingsIcon from "../../assets/icons/settings.png";
 import UserManual from "../../assets/icons/user-manual.png";
-import DXCLogo from "../../assets/dxc-brand.png";
+import DXCLogo from "../../assets/dxc-black.png";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useLocation } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
@@ -35,7 +35,7 @@ function TopBar() {
           <img
             src={DXCLogo}
             alt="DXC Logo"
-            className="img-fluid"
+            className="logo"
             style={{ maxHeight: "100px" }}
           />
         </div>
@@ -55,7 +55,7 @@ function TopBar() {
               <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
                 Batch File Query
               </Dropdown.Item>
-              <Dropdown.Item eventKey="AIRA" href="/AIRA/input">
+              <Dropdown.Item eventKey="AIRA" href="/AIRA">
                 AIRA
               </Dropdown.Item>
               <Dropdown.Item eventKey="RAG" href="/RAG">

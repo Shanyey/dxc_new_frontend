@@ -104,6 +104,12 @@ function HomePage() {
                 value={input}
                 onChange={handleChange}
                 placeholder="Type a message..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend(e);
+                  }
+                }}
               />
               <div className="buttons">
                 <button
@@ -203,6 +209,12 @@ function HomePage() {
                 value={input}
                 onChange={handleChange}
                 placeholder="Type a message..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend(e);
+                  }
+                }}
               />
               <div className="buttons">
                 <button
