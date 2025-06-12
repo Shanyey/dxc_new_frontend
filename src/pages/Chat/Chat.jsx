@@ -31,20 +31,24 @@ function HomePage() {
         formData.append("files", file);
       });
 
-      const response = await axios.post("http://127.0.0.1:5000/webbrowsing", {
-        query: input,
-        history: messages,
-        max_tokens: 128000, //to be calculated based on query
-        model: "gpt-4o-mini", //TBC if the user can choose the model
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin":
-            "https://dxcfrontend2.azurewebsites.net",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        },
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:5000/chat",
+        formData
+        // {
+        //   query: input,
+        //   history: messages,
+        //   max_tokens: 128000, //to be calculated based on query
+        //   model: "gpt-4o-mini", //TBC if the user can choose the model
+        //   headers: {
+        //     "Access-Control-Allow-Headers": "Content-Type",
+        //     "Content-Type": "application/json",
+        //     "Access-Control-Allow-Origin":
+        //       "https://dxcfrontend2.azurewebsites.net",
+        //     "Access-Control-Allow-Credentials": "true",
+        //     "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        //   },
+        // }
+      );
 
       console.log("Response:", response.data);
 
