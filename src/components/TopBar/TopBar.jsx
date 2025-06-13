@@ -5,24 +5,32 @@ import SettingsIcon from "../../assets/icons/settings.png";
 import UserManual from "../../assets/icons/user-manual.png";
 import DXCLogo from "../../assets/dxc-black.png";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useLocation } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
-//temporary, installed once done with firebase
-/* import { auth } from "../../../../dxc_frontend_dev/src/Firebase"; */
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 function TopBar() {
-  /*  const auth = getAuth(); */
-  const [selectedItem, setSelectedItem] = useState("Home");
+  const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    console.log("user signed out");
-    // try {
-    //   signOut(auth);
-    //   console.log("user signed out");
-    // } catch {
-    //   console.error("error signing out");
-    // }
+  const handleSignOut = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    try {
+      await signOut(auth);
+      console.log(`user ${user?.email} signed out`);
+    } catch {
+      console.log(`user ${user?.email} error signing out`);
+    }
   };
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/", { replace: true });
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleSelect = (eventKey) => {
     setSelectedItem(eventKey);
@@ -71,7 +79,7 @@ function TopBar() {
           </Dropdown>
         </div>
         <div className="general">
-          <a href={"/"} onClick={handleSignOut} className="wide-link">
+          <a onClick={handleSignOut} className="wide-link">
             <img src={SettingsIcon} alt="Settings" className="img-fluid" />
             Sign Out
           </a>

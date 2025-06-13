@@ -3,13 +3,25 @@ import "./ResetPage.css";
 import DXCLogo from "../../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../../services/Firebase";
 
 function ResetPage() {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Email: ${email}`); //TO BE REMOVED
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log(`Reset email sent to: ${email}`);
+      alert("If this email is registered, a reset link has been sent.");
+      setEmail(""); // Clear the input field after submission
+    } catch (error) {
+      if (error.code === "auth/invalid-email") {
+        alert("Invalid email address. Please enter a valid email.");
+      }
+      console.error(`ERROR: ${error.message}`);
+    }
   };
 
   return (

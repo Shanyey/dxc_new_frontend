@@ -4,38 +4,36 @@ import DXCLogo from "../../assets/dxc-brand.png";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { useNavigate, Link, replace } from "react-router-dom";
-//import { auth } from "../../../../dxc_frontend_dev/src/Firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../services/Firebase";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/chat", { replace: true });
-    // try {
-    //   const userCredentials = signInWithEmailAndPassword(auth, email, password);
-    //   const user = userCredentials.user;
-    //   setUserInfo({
-    //     userDetails: user.displayName,
-    //     userImage: user.photoURL,
-    //     userMail: user.email,
-    //   });
-    // } catch (error) {
-    //   console.log(error.code, error.message);
-    // }
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(`userInfo: ${JSON.stringify(userCredentials.user.email)}`);
+    } catch (error) {
+      console.log(error.code, error.message);
+    }
   };
 
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     console.log(user);
-  //     if (user != null) {
-  //       navigate("/home", { replace: true });
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/chat", { replace: true });
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   return (
     <div className="login-background">
@@ -47,7 +45,7 @@ function LoginPage() {
             <input
               type="email"
               placeholder="Email"
-              //required
+              required
               value={email}
               onChange={(ev) => setEmail(ev.target.value)}
             />
@@ -57,7 +55,7 @@ function LoginPage() {
             <input
               type="password"
               placeholder="Password"
-              //required
+              required
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
             />
