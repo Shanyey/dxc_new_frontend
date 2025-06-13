@@ -10,26 +10,7 @@ const CVAnalyser = () => {
   const [cvFiles, setCvFiles] = useState([]);
   const [jobFiles, setJobFiles] = useState([]);
   const [loading, setLoading] = useState(false);
-  //const [userInfo, setUserInfo] = useState();
   const [uploadStatus, setUploadStatus] = useState("");
-
-  //Temporarily disabled
-  /*
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-    console.log(user);
-    if (user) {
-        setUserInfo({
-        userDetails: user.displayName,
-        userImage: user.photoURL,
-        userMail: user.email,
-        });
-    } else {
-        navigate("/");
-    }
-    });
-  }, []);
-  */
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -1,58 +1,37 @@
 import "./BFQPage.css";
 import TopBar from "../../components/TopBar/TopBar";
 import React, { useState, useEffect, useRef } from "react";
-//to be reinstalled when ready to use BatchProcessing file
-//import MyDropzone from "../components/BatchProcessing";
+import Dropzone from "../../components/DropZone/DropZone.jsx";
 import Select from "react-select";
-
-//to be reinstalled when firebase is properly set up
-//import { auth } from "../Firebase";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
-
-//For temporary react-dropzone
-import {useCallback} from 'react'
-import Dropzone from 'react-dropzone'
 
 function BatchFileQueryPage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState();
-
-
-  //To be reinstalled when firebase is properly set up
-  /*useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      if (user) {
-        setUserInfo({
-          userDetails: user.displayName,
-          userImage: user.photoURL,
-          userMail: user.email,
-        });
-      } else {
-        navigate("/");
-      }
-    });
-  }, []);*/
-
   const [tooltipEnabled, setTooltipEnabled] = useState(false);
-
+  const [files, setFiles] = useState([]);
   // For users to select the 3 different GPT models: String to identify the model, label: String for Select Dropdown option at the top, deploymentName: to initialise the correct deployment in Azure
   const models = [
-    { value: "gpt-4o-mini", label: "GPT-4o-mini", deploymentName: "gpt4-o-mini" },
+    {
+      value: "gpt-4o-mini",
+      label: "GPT-4o-mini",
+      deploymentName: "gpt4-o-mini",
+    },
     { value: "gpt-4o", label: "GPT-4o", deploymentName: "gpt4o" },
   ];
 
   // Default model selected is GPT4o mini
-  const [selectedOption, setSelectedOption] = useState(models[0]);
+  const [selectedModel, setSelectedModel] = useState(models[0]);
 
   const [inputLanguage, setInputLanguage] = useState("English");
   const [updatedLanguage, setUpdatedLanguage] = useState(inputLanguage);
 
   // to handle personalised prompts
-  // default prompt before the user input his own prompt
   const [personalisedPrompt, setPersonalisedPrompt] = useState(
     "(Currently Empty, please input prompt above)"
   );
+
   // updated prompt to be set once the user keys in his prompt
   const [updatedPrompt, setUpdatedPrompt] = useState(personalisedPrompt);
 
@@ -76,7 +55,7 @@ function BatchFileQueryPage() {
     {
       value: "Peform a verbatim translation to" + updatedLanguage + ":",
       label: "Translation (Verbatim)",
-      naming: "verbatim_tra"
+      naming: "verbatim_tra",
     },
     {
       value: updatedPrompt + ":",
@@ -106,6 +85,7 @@ function BatchFileQueryPage() {
   // upon personalised prompt keyed in and clicked on button
   function handlePersonalisedPromptClick() {
     setUpdatedPrompt(personalisedPrompt);
+    setPersonalisedPrompt("");
   }
 
   // upon user key in prompt text box
@@ -140,26 +120,30 @@ function BatchFileQueryPage() {
     }
   }, [updatedPrompt]);
 
+  const handleSubmit = () => {
+    console.log("Files submitted:", files);
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+  };
+
   return (
     <>
       <div className="page">
         <TopBar />
         <div className="batchfilequery-main-content">
-            <div className="BFQIntro">
-                <h2>
-                    Batch File Query
-                </h2>
-            </div>
+          <div className="BFQIntro">
+            <h2>Batch File Query</h2>
+          </div>
 
           <div className="select-container">
             <div className="select-btn">
               <span className="select-text">Select function: </span>
               <Select
                 id="select-func"
-                defaultValue={func}
-                onChange={(e) => {
-                  setFunc(e);
-                }}
+                value={func}
+                onChange={setFunc}
                 options={functions}
                 placeholder="Select Function"
                 className="text-sm"
@@ -169,8 +153,8 @@ function BatchFileQueryPage() {
             <div className="select-btn">
               <span className="select-text">Select model: </span>
               <Select
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
+                value={selectedModel}
+                onChange={setSelectedModel}
                 options={models}
                 id="select-model"
                 placeholder="Select Model"
@@ -178,12 +162,13 @@ function BatchFileQueryPage() {
             </div>
           </div>
 
-          
           {/* only renders if user chooses translation */}
-          {(func.label == "Translation (Summary)" || func.label == "Translation (Verbatim)") && (
+          {(func.label == "Translation (Summary)" ||
+            func.label == "Translation (Verbatim)") && (
             <div className="translation-container">
               <label>
-                Translate to {updatedLanguage} or translate to another language:
+                Translate to {updatedLanguage} or choose a language to translate
+                to :
               </label>
               <input
                 type="text"
@@ -210,6 +195,7 @@ function BatchFileQueryPage() {
                 <input
                   type="text"
                   placeholder="For eg, 'Extract the personnel names mentioned'"
+                  value={personalisedPrompt}
                   onChange={handlePersonalisedPromptChange}
                   id="personalised-input"
                   className="translation-input"
@@ -241,22 +227,16 @@ function BatchFileQueryPage() {
           />
           */}
 
-          {/*Temporary Dropzone*/}
-          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
-            {({getRootProps, getInputProps}) => (
-              <section className="drop">
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <p>THIS IS A TEMPORARY DROPZONE</p>
-                  <p>Drag and drop some files here, or click to select files. Only .pdf or .txt files are accepted.</p>
-                </div>
-              </section>
-            )}
-          </Dropzone>
+          <Dropzone
+            acceptedFileTypes={["application/pdf"]}
+            files={files}
+            setFiles={setFiles}
+          />
           <br></br>
+
+          <button className="submit-button" onClick={handleSubmit} />
         </div>
       </div>
-
     </>
   );
 }
