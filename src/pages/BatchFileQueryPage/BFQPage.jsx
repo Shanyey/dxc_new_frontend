@@ -28,32 +28,38 @@ function BatchFileQueryPage() {
   const [updatedLanguage, setUpdatedLanguage] = useState(inputLanguage);
 
   // to handle personalised prompts
-  const [personalisedPrompt, setPersonalisedPrompt] = useState(
-    "(Currently Empty, please input prompt above)"
-  );
+  const [personalisedPrompt, setPersonalisedPrompt] = useState("");
 
   // updated prompt to be set once the user keys in his prompt
-  const [updatedPrompt, setUpdatedPrompt] = useState(personalisedPrompt);
+  const [updatedPrompt, setUpdatedPrompt] = useState(
+    "No personalised prompt set."
+  );
 
   // 4 functions.  value: To be passed into BatchProcessing.jsx component as the prompt. label: String for Select Dropdown option for user to choose function. naming: String to be passed into BatchProcessing.jsx component as props for naming of download file
   const functions = [
     {
-      value: "Summarize: ",
+      value: "Summarize the following text: ",
       label: "Summarization",
       naming: "sum",
     },
     {
-      value: "Extract the keywords from: ",
+      value: "Extract the keywords from the following text: ",
       label: "Keyword Extraction",
       naming: "key",
     },
     {
-      value: "Translate to " + updatedLanguage + ":",
+      value:
+        "Translate the following text to " +
+        updatedLanguage +
+        ", if it is the same language, just reply with the exact same text:",
       label: "Translation (Summary)",
       naming: "tra",
     },
     {
-      value: "Peform a verbatim translation to" + updatedLanguage + ":",
+      value:
+        "Perform a verbatim translation to " +
+        updatedLanguage +
+        ", if it is the same language, just reply with the exact same text:",
       label: "Translation (Verbatim)",
       naming: "verbatim_tra",
     },
@@ -80,6 +86,7 @@ function BatchFileQueryPage() {
   function handleLangClick() {
     setUpdatedLanguage(inputLanguage);
     setFunc({ ...func, value: "Translate to " + updatedLanguage + ":" });
+    setInputLanguage("");
   }
 
   // upon personalised prompt keyed in and clicked on button
@@ -120,12 +127,43 @@ function BatchFileQueryPage() {
     }
   }, [updatedPrompt]);
 
-  const handleSubmit = () => {
-    console.log("Files submitted:", files);
+  const handleSubmit = async () => {
+    // console.log("Files submitted:", files);
+    // console.log("action prompt:", func.value);
+    // console.log("Selected model:", selectedModel);
+    // console.log("Updated language:", updatedLanguage);
+    // console.log("Updated prompt:", updatedPrompt);
+
     const formData = new FormData();
     files.forEach((file) => {
       formData.append("files", file);
     });
+    formData.append("action", func.naming);
+    formData.append("actionPrompt", func.value);
+    formData.append("model", selectedModel.value); //not sure which field to use yet
+    formData.append("language", updatedLanguage);
+    formData.append("personalisedPrompt", updatedPrompt);
+
+    const response = await axios.post(
+      "http://127.0.0.1:5000/test-bfq",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "blob",
+      }
+    );
+
+    // Create a download link for the ZIP file
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "llm_responses.zip"); // Set the desired file name
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -174,6 +212,7 @@ function BatchFileQueryPage() {
                 type="text"
                 placeholder="Input a language"
                 id="input-lang"
+                value={inputLanguage}
                 onChange={handleLangChange}
                 className="translation-input"
               />
@@ -228,7 +267,7 @@ function BatchFileQueryPage() {
           */}
 
           <Dropzone
-            acceptedFileTypes={["application/pdf"]}
+            acceptedFileTypes={["application/pdf", "text/plain"]}
             files={files}
             setFiles={setFiles}
           />
