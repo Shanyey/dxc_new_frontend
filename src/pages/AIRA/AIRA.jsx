@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // temporarily disable
 // import { auth } from "../Firebase";
-import DeepResearchInput from "../../components/AIRA/AIRA_InputQuery";
+import InputQuery from "../../components/AIRA/AIRA_InputQuery";
 import DeepInsightsDisplay from "../../components/AIRA/DeepInsightsDisplay";
 import DocumentsDisplay from "../../components/AIRA/DocumentsDisplay";
 import TopBar from "../../components/TopBar/TopBar";
+import Spinner from "../../assets/icons/spinner.gif"
 
 function AIRA() {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    const baseUrl = "http://127.0.0.1:5000";
 
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState();
@@ -146,14 +147,15 @@ function AIRA() {
         resetState();
 
         try {
-            const response = await fetch(`${baseUrl}/deep_insights`, {
+            const response = await fetch("http://127.0.0.1:5000/deep_insights", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ query, username: userInfo.userMail, top_k, urls })
+                body: JSON.stringify({ query, username: "k@tinnolab.org", //userInfo.userMail, 
+                top_k, urls })
             });
-
+        
             if (!response.ok) {
                 console.error(`Request failed with status ${response.status}, ${response.statusText}`);
             }
@@ -176,7 +178,7 @@ function AIRA() {
                 userVideos: data.userVideos || [],
                 references: data.references || [],
                 error_messages: data.error_messages || []
-            });          
+            });
 
         } catch(error) {
             console.log("Error fetching Insights data:", error);
@@ -331,7 +333,7 @@ function AIRA() {
             const rawContent = rawBody;
             
             // Notice that we are no longer sending mediaAnalysis separately
-            const reportPromise = fetch(`${baseUrl}/deep/report`, {
+            const reportPromise = fetch("http://127.0.0.1:5000/deep/report", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -339,7 +341,7 @@ function AIRA() {
                 body: JSON.stringify({ query, context, reference, rawContent })
             });
     
-            const pptPromise = fetch(`${baseUrl}/powerpoint`, {
+            const pptPromise = fetch("http://127.0.0.1:5000/powerpoint", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -382,7 +384,7 @@ function AIRA() {
         switch (step) {
             case 1:
                 return (
-                    <DeepResearchInput
+                    <InputQuery
                         query={query}
                         setQuery={setQuery}
                         urls={urls}
@@ -413,7 +415,7 @@ function AIRA() {
                 );
             default:
                 return (
-                    <DeepResearchInput
+                    <InputQuery
                         query={query}
                         setQuery={setQuery}
                         urls={urls}
@@ -437,7 +439,10 @@ function AIRA() {
                 </div>
                 { isLoading ? (
                         <div className="loading-container">
-                            hehe
+                            Currently Retrieving Data...
+                            <div className="loading-spinner">
+                                <Spinner    />
+                            </div>
                         </div>
                     ) : (
                         renderComponent()
