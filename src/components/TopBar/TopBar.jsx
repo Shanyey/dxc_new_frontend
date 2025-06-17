@@ -10,6 +10,17 @@ import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 function TopBar() {
   const navigate = useNavigate();
+  const pathToTool = {
+    "/chat": "Chat",
+    "/batchfilequery": "Batch File Query",
+    "/AIRA": "AIRA",
+    "/RAG": "RAG",
+    "/cv": "CV Analyser",
+    "/gradesanalyser": "Grades Analyser",
+  };
+
+  const currentPath = window.location.pathname;
+  const [selectedItem, setSelectedItem] = useState(pathToTool[currentPath] || "Chat");
 
   const handleSignOut = async () => {
     const auth = getAuth();
@@ -38,45 +49,50 @@ function TopBar() {
 
   return (
     <div className="home-page">
-      <div className="header p-3">
-        <div className="DXC_Logo">
-          <img
-            src={DXCLogo}
-            alt="DXC Logo"
-            className="logo"
-            style={{ maxHeight: "100px" }}
-          />
+      <div
+        className="header p-3"
+      >
+        <div className="left-group">
+          <div className="DXC_Logo">
+            <img
+              src={DXCLogo}
+              alt="DXC Logo"
+            />
+          </div>
+          <div className="dropdown">
+            <Dropdown onSelect={handleSelect}>
+              <Dropdown.Toggle
+                variant="secondary"
+                id="dropdown-basic"
+                className="btn btn-primary"
+              >
+                Tools
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="Chat" href="/chat">
+                  Chat
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
+                  Batch File Query
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="AIRA" href="/AIRA">
+                  AIRA
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="RAG" href="/RAG">
+                  RAG
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="CV Analyser" href="/cv">
+                  CV Analyser
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
+                  Grades Analyser
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
         </div>
-        <div className="dropdown">
-          <Dropdown onSelect={handleSelect}>
-            <Dropdown.Toggle
-              variant="secondary"
-              id="dropdown-basic"
-              className="btn btn-primary"
-            >
-              Tools
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="Home" href="/chat">
-                Chat
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
-                Batch File Query
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="AIRA" href="/AIRA">
-                AIRA
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="RAG" href="/RAG">
-                RAG
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="CV Analyser" href="/cv">
-                CV Analyser
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
-                Grades Analyser
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        <div className="indicator">
+          {selectedItem}
         </div>
         <div className="general">
           <a href="/userguide" className="wide-link">

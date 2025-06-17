@@ -92,6 +92,8 @@ function HomePage() {
     }
   };
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div className="page">
       <TopBar />
@@ -120,7 +122,7 @@ function HomePage() {
                 }}
               />
               <div className="buttons">
-                <div  className="left-buttons">
+                <div className="left-buttons">
                 <button
                   type="button"
                   className="plus"
@@ -129,9 +131,40 @@ function HomePage() {
                 >
                   <img src={UploadIcon} alt="Upload" className="upload-icon" />
                 </button>
-                <button type="button" className="plus" title="Options">
+                <button type="button" className="plus" title="Options"  onClick={() => setShowDropdown((prev) => !prev)}>
                   <img src={OptionsIcon} alt="Options" className="options-icon" />
                 </button>
+                {showDropdown && (
+                  <div className="dropdown-design"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    <div
+                      className="dropdown-menu-custom chat-dropdown"
+                      onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
+                    >
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Create an image");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Image Generation
+                      </button>
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Search real-time");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Real Time Search
+                      </button>
+                    </div>
+                  </div>
+                )}
                 </div>
                 <input
                   type="file"
@@ -216,14 +249,50 @@ function HomePage() {
                 }}
               />
               <div className="buttons">
+                <div className="left-buttons">
                 <button
                   type="button"
                   className="plus"
                   onClick={handlePlusClick}
                   title="Attach file"
                 >
-                  +
+                  <img src={UploadIcon} alt="Upload" className="upload-icon" />
                 </button>
+                <button type="button" className="plus" title="Options"  onClick={() => setShowDropdown((prev) => !prev)}>
+                  <img src={OptionsIcon} alt="Options" className="options-icon" />
+                </button>
+                {showDropdown && (
+                  <div className="dropdown-design"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    <div
+                      className="dropdown-menu-custom chat-dropdown"
+                      onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
+                    >
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Create an image");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Image Generation
+                      </button>
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Search real-time");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Real Time Search
+                      </button>
+                    </div>
+                  </div>
+                )}
+                </div>
                 <input
                   type="file"
                   ref={fileInputRef}
