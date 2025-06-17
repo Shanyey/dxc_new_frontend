@@ -79,13 +79,13 @@ function TopBar() {
           </Dropdown>
         </div>
         <div className="general">
-          <a onClick={handleSignOut} className="wide-link">
-            <img src={SettingsIcon} alt="Settings" className="img-fluid" />
-            Sign Out
-          </a>
           <a href="/userguide" className="wide-link">
             <img src={UserManual} alt="User Guide" className="img-fluid" />
             User Guide
+          </a>
+          <a onClick={handleSignOut} className="wide-link">
+            <img src={SettingsIcon} alt="Settings" className="img-fluid" />
+            Sign Out
           </a>
         </div>
       </div>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Chat.css";
 import TopBar from "../../components/TopBar/TopBar";
 import SendIcon from "../../assets/icons/send-icon.png";
+import UploadIcon from "../../assets/icons/upload-icon.png";
+import OptionsIcon from "../../assets/icons/options-icon.png";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 
@@ -98,8 +100,7 @@ function HomePage() {
         <div className="container-fluid p-4">
           <div className="text-center mt-5">
             <div>
-              <p className="welcome">Welcome to DXC</p>
-              <p className="text-muted">What would you like to do today?</p>
+              <p className="welcome text-muted">Ready whenever you are.</p>
             </div>
           </div>
 
@@ -119,14 +120,19 @@ function HomePage() {
                 }}
               />
               <div className="buttons">
+                <div  className="left-buttons">
                 <button
                   type="button"
                   className="plus"
                   onClick={handlePlusClick}
                   title="Attach file"
                 >
-                  +
+                  <img src={UploadIcon} alt="Upload" className="upload-icon" />
                 </button>
+                <button type="button" className="plus" title="Options">
+                  <img src={OptionsIcon} alt="Options" className="options-icon" />
+                </button>
+                </div>
                 <input
                   type="file"
                   ref={fileInputRef}
