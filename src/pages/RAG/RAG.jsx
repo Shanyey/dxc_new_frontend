@@ -1,57 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-// import { Oval } from 'react-loader-spinner'; // Importing the spinner
-import './Rag.css';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+// import { Oval } from "react-loader-spinner"; // Importing the spinner
+import "./Rag.css";
 import { useNavigate } from "react-router-dom";
-import Dropzone from "../../components/DropZone/DropZone"; // Ensure this path is correct
-//import { auth } from "../Firebase";
+import Dropzone from "../../components/DropZone/DropZone"; // Ensure this path is correct}
 import TopBar from "../../components/TopBar/TopBar";
+import { getAuth } from "firebase/auth";
 
 const RagPage = () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const auth = getAuth();
+  const user = auth.currentUser;
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState();
   const [file, setFile] = useState([]);
-  const [fileName, setFileName] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('');
-  const [query, setQuery] = useState('');
+  const [fileName, setFileName] = useState("");
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [query, setQuery] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [isUploading, setIsUploading] = useState(false); // Uploading state
   const [isLoading, setIsLoading] = useState(false); // Chat loading state
   const chatBoxRef = useRef(null);
 
-  // Checks if user is authenticated
-  /* 
-    useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-    console.log(user);
-    if (user) {
-        setUserInfo({
-        userDetails: user.displayName,
-        userImage: user.photoURL,
-        userMail: user.email,
-        });
-    } else {
-        navigate("/");
-    }
-    });
-  }, []);
-  */
-
   const handleReset = () => {
-    axios.post(`${baseUrl}/clear_db`, {
-      username: userInfo.userMail
-    })
-      .then(response => {
-        console.log('Database cleared:', response.data.status);
+    axios
+      .post(`${baseUrl}/clear_db`, {
+        username: userInfo.userMail,
+      })
+      .then((response) => {
+        console.log("Database cleared:", response.data.status);
         setChatHistory([]);
-        setQuery('');
-        setFileName('');
-        setUploadStatus('');
+        setQuery("");
+        setFileName("");
+        setUploadStatus("");
         setFile([]);
       })
-      .catch(error => {
-        console.error('There was an error clearing the /db folder:', error);
+      .catch((error) => {
+        console.error("There was an error clearing the /db folder:", error);
       });
   };
 
@@ -70,78 +55,114 @@ const RagPage = () => {
   const handleFileUpload = async (e) => {
     e.preventDefault();
     if (file.length === 0) return; // Don't proceed if no files are selected
-  
+
     const formData = new FormData();
     file.forEach((f) => {
-      if (f.type === 'application/pdf' || f.type === 'text/plain') {
-        formData.append('file', f);
+      if (f.type === "application/pdf" || f.type === "text/plain") {
+        formData.append("file", f);
       }
     });
-    formData.append('username', userInfo.userMail);
+    formData.append("userEmail", user.email);
     setIsUploading(true); // Start spinner
-  
+
     try {
-      const response = await fetch(`${baseUrl}/upload_documents`, {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const res = await response.json();
-      setUploadStatus(res.status);
+      const response = await axios.post(
+        `${baseUrl}/test-rag/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setIsUploading(false);
     } catch (error) {
-      console.error('Error uploading files:', error);
-      setUploadStatus('Upload failed');
-    } finally {
-      setIsUploading(false); // Stop spinner
+      console.error("Error uploading files:", error);
+      setUploadStatus("Upload failed");
     }
+    // try {
+    //   const response = await fetch(`${baseUrl}/upload_documents`, {
+    //     method: "POST",
+    //     body: formData,
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Network response was not ok");
+    //   }
+
+    //   const res = await response.json();
+    //   setUploadStatus(res.status);
+    // } catch (error) {
+    //   console.error("Error uploading files:", error);
+    //   setUploadStatus("Upload failed");
+    // } finally {
+    //   setIsUploading(false); // Stop spinner
+    // }
   };
 
   const handleChatSubmit = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
 
-    const newUserMessage = { role: 'user', content: query };
+    const newUserMessage = { role: "user", content: query };
 
-    setChatHistory(prevChatHistory => [...prevChatHistory, newUserMessage]);
+    setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
 
-    setQuery('');
+    setQuery("");
 
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${baseUrl}/ask_documents`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${baseUrl}/test-rag`,
+        {
+          query,
+          chat_history: chatHistory,
+          username: user.email,
         },
-        body: JSON.stringify({ query, chat_history: chatHistory, username: userInfo.userMail }),
-      });
-    
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-    
-      const res = await response.json();
-      const newAssistantMessage = { 
-        role: 'assistant', 
-        content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}` 
-      };
-    
-    
-      setChatHistory(prevChatHistory => [...prevChatHistory, newAssistantMessage]);
-    
-      if (chatBoxRef.current) {
-        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-      }
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     } catch (error) {
-      console.error('Error querying PDF:', error);
-    } finally {
+      console.error("Error querying PDF:", error);
       setIsLoading(false);
+      return;
     }
+    // try {
+    //   const response = await fetch(`${baseUrl}/ask_documents`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       query,
+    //       chat_history: chatHistory,
+    //       username: userInfo.userMail,
+    //     }),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Network response was not ok");
+    //   }
+
+    //   const res = await response.json();
+    //   const newAssistantMessage = {
+    //     role: "assistant",
+    //     content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}`,
+    //   };
+
+    //   setChatHistory((prevChatHistory) => [
+    //     ...prevChatHistory,
+    //     newAssistantMessage,
+    //   ]);
+
+    //   if (chatBoxRef.current) {
+    //     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    //   }
+    // } catch (error) {
+    //   console.error("Error querying PDF:", error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -149,22 +170,35 @@ const RagPage = () => {
       <TopBar />
       <div className="container-fluid p-4">
         <h1 className="title">Retrieval Augmented Generation</h1>
-       
+
         <div className="upload-section">
-          <Dropzone 
-            acceptedFileTypes={['application/pdf', 'text/plain']} 
+          <Dropzone
+            acceptedFileTypes={["application/pdf", "text/plain"]}
             files={file}
             setFiles={setFile}
           />
-          
+
           <div className="buttonContainer">
-            <button onClick={handleFileUpload} className="uploadButton" aria-label="Upload Files">Upload</button>
-            <button onClick={handleReset} className="resetButton" type="button" aria-label="Reset Chat">Reset Chat</button>
+            <button
+              onClick={handleFileUpload}
+              className="uploadButton"
+              aria-label="Upload Files"
+            >
+              Upload
+            </button>
+            <button
+              onClick={handleReset}
+              className="resetButton"
+              type="button"
+              aria-label="Reset Chat"
+            >
+              Reset Chat
+            </button>
           </div>
-          
+
           {isUploading && (
             <div className="centeredContent">
-              <Oval
+              {/* <Oval
                 height={40}
                 width={40}
                 color="#4fa94d"
@@ -173,12 +207,11 @@ const RagPage = () => {
                 secondaryColor="#4fa94d"
                 strokeWidth={2}
                 strokeWidthSecondary={2}
-              />
+              /> */}
               <p>Uploading...</p>
             </div>
           )}
           {uploadStatus && <p>{uploadStatus}</p>}
-
         </div>
 
         <div className="chat-section">
@@ -192,20 +225,34 @@ const RagPage = () => {
               className="chatInput"
               aria-label="Chat Input"
             />
-            <button type="submit" className="sendButton" aria-label="Send Message">Send</button>
+            <button
+              type="submit"
+              className="sendButton"
+              aria-label="Send Message"
+            >
+              Send
+            </button>
           </form>
           <div ref={chatBoxRef} className="chatBox">
             {chatHistory.map((msg, index) => (
-              <div key={msg.id || index} className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`}>
-                <p><strong>{msg.role === 'user' ? 'You' : 'Assistant'}:</strong> {msg.content}</p>
+              <div
+                key={msg.id || index}
+                className={`message ${
+                  msg.role === "user" ? "user" : "assistant"
+                }`}
+              >
+                <p>
+                  <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>{" "}
+                  {msg.content}
+                </p>
               </div>
             ))}
           </div>
         </div>
-        
+
         {isLoading && (
           <div className="loadingContainer">
-            <Oval
+            {/* <Oval
               height={40}
               width={40}
               color="#4fa94d"
@@ -214,13 +261,13 @@ const RagPage = () => {
               secondaryColor="#4fa94d"
               strokeWidth={2}
               strokeWidthSecondary={2}
-            />
+            /> */}
             <p className="loadingText">Loading...</p>
           </div>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default RagPage;
