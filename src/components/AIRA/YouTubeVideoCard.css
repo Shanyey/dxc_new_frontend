@@ -6,7 +6,7 @@
     border-radius: 10px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
     background-color: #7c5c5c; /* Light background color for contrast */
-
+    margin-bottom: 10px;
   }
 
 .card-content {

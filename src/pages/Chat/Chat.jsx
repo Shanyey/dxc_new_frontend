@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Chat.css";
 import TopBar from "../../components/TopBar/TopBar";
 import SendIcon from "../../assets/icons/send-icon.png";
+import UploadIcon from "../../assets/icons/upload-icon.png";
+import OptionsIcon from "../../assets/icons/options-icon.png";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 
@@ -85,6 +87,8 @@ function HomePage() {
     }
   };
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div className="page">
       <TopBar />
@@ -93,8 +97,7 @@ function HomePage() {
         <div className="container-fluid p-4">
           <div className="text-center mt-5">
             <div>
-              <p className="welcome">Welcome to DXC</p>
-              <p className="text-muted">What would you like to do today?</p>
+              <p className="welcome text-muted">Ready whenever you are.</p>
             </div>
           </div>
 
@@ -114,14 +117,50 @@ function HomePage() {
                 }}
               />
               <div className="buttons">
+                <div className="left-buttons">
                 <button
                   type="button"
                   className="plus"
                   onClick={handlePlusClick}
                   title="Attach file"
                 >
-                  +
+                  <img src={UploadIcon} alt="Upload" className="upload-icon" />
                 </button>
+                <button type="button" className="plus" title="Options"  onClick={() => setShowDropdown((prev) => !prev)}>
+                  <img src={OptionsIcon} alt="Options" className="options-icon" />
+                </button>
+                {showDropdown && (
+                  <div className="dropdown-design"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    <div
+                      className="dropdown-menu-custom chat-dropdown"
+                      onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
+                    >
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Create an image");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Image Generation
+                      </button>
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Search real-time");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Real Time Search
+                      </button>
+                    </div>
+                  </div>
+                )}
+                </div>
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -205,14 +244,50 @@ function HomePage() {
                 }}
               />
               <div className="buttons">
+                <div className="left-buttons">
                 <button
                   type="button"
                   className="plus"
                   onClick={handlePlusClick}
                   title="Attach file"
                 >
-                  +
+                  <img src={UploadIcon} alt="Upload" className="upload-icon" />
                 </button>
+                <button type="button" className="plus" title="Options"  onClick={() => setShowDropdown((prev) => !prev)}>
+                  <img src={OptionsIcon} alt="Options" className="options-icon" />
+                </button>
+                {showDropdown && (
+                  <div className="dropdown-design"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    <div
+                      className="dropdown-menu-custom chat-dropdown"
+                      onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
+                    >
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Create an image");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Image Generation
+                      </button>
+                      <button
+                        type="button"
+                        className="dropdown-item chat-dropdown-item"
+                        onClick={() => {
+                          setInput("Search real-time");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        Real Time Search
+                      </button>
+                    </div>
+                  </div>
+                )}
+                </div>
                 <input
                   type="file"
                   ref={fileInputRef}

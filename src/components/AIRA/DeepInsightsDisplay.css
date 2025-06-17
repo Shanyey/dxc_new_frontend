@@ -21,15 +21,33 @@
     grid-row: 1 / 2;
 }
 
+.overview-container{
+    margin-top: 30px;
+}
+
 .insights-header {
     font-weight: bold;
     font-size: 1rem;
+    margin-top: 20px;
+    color: black;
 }
 
 .insights-content {
     grid-column: 1 / 3;
     grid-row: 2 / 3;
     text-align: justify;
+}
+
+.score-text{
+    color: black;
+    font-weight: bold;
+}
+
+.option{
+    background-color: green;
+    color: white;
+    font-size:bold;
+    margin-top: 15px;
 }
 
 .insights-references {
@@ -54,7 +72,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;

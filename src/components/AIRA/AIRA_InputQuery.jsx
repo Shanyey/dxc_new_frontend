@@ -4,7 +4,7 @@ import "./AIRA_InputQuery.css";
 import Stepper from 'react-stepper-horizontal';
 import Trash from '../../assets/icons/trash-icon.png';
 
-function DeepResearchInput({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_k, handleChangeTopK }) {
+function InputQuery({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_k, handleChangeTopK }) {
 
     // if (!userInfo) {
     //     return <div>Loading...</div>;
@@ -19,7 +19,7 @@ function DeepResearchInput({ query, setQuery, onSubmit, userInfo, onTranscriptAd
     const userMail = "k@tinnolab.org";
 
     const [urls, setUrls] = useState([""]);
-    const [input, setInput] = useState("");
+    
 
     const handleUrlChange = (index, value) => {
         const newUrls = [...urls];
@@ -52,60 +52,14 @@ function DeepResearchInput({ query, setQuery, onSubmit, userInfo, onTranscriptAd
         } finally {
             setIsResetting(false);
         }
-    };
-
-    const handleChange = (e) => setInput(e.target.value);
-    const handleSend = async (e) => {
-        e.preventDefault();
-        if (input.trim() === "") return;
-    setMessages([...messages, { role: "user", content: input }]);
-    setInput("");
+    }; 
 
     useEffect(() => {
         if (statusMessage) {
             const timer = setTimeout(() => setStatusMessage(''), 3000);
             return () => clearTimeout(timer);
         }
-    }, [statusMessage]);
-    try {
-      const response = await axios.post("http://127.0.0.1:5000/webbrowsing", {
-        query: input,
-        history: messages,
-        max_tokens: 128000, //to be calculated based on query
-        model: "gpt-4o-mini", //TBC if the user can choose the model
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin":
-            "https://dxcfrontend2.azurewebsites.net",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        },
-      });
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          // sender: "system",
-          // text: response.data,
-          role: "assistant",
-          content: response.data,
-        },
-      ]);
-      console.log("Content:", response.data);
-        } catch (error) {
-        console.error("Error sending message:", error);
-        setMessages((prev) => [
-            ...prev,
-            {
-            // sender: "system",
-            // text: error.messages,
-            role: "assistant",
-            content: error.message,
-            },
-        ]);
-        }
-    }
+    }, [statusMessage]);    
 
     return (
         <div>
@@ -203,26 +157,32 @@ function DeepResearchInput({ query, setQuery, onSubmit, userInfo, onTranscriptAd
             </div>
             
             {/* Query Input */}
-            <form onSubmit={handleSend} className="query-container">
+            <form className="query-container">
                 <div className="query-text">What is your Query?</div>
                 <div className="query-input">
                 <input
                     type="text"
                     className="inputbox"
-                    value={input}
-                    onChange={handleChange}
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    onKeyDown={e => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            onSubmit(e);
+                        }
+                    }}
                     placeholder="Type a message..."
                 />
                 <button
                     className="btn btn-primary rounded-pill"
                     type="submit"
-                    disabled={input.trim() === ""}
+                    disabled={query.trim() === ""}
+                    onClick={e => onSubmit(e)}
                 >
                     Submit
                 </button>
                 </div>
             </form>
-
             {/* Status Message */}
                 {statusMessage && (
                     <div className={`status-message ${statusType}`} style={{ marginTop: "1rem", maxWidth: 600 }}>
@@ -234,4 +194,4 @@ function DeepResearchInput({ query, setQuery, onSubmit, userInfo, onTranscriptAd
     );
 }
 
-export default DeepResearchInput;
+export default InputQuery;
