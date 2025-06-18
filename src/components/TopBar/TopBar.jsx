@@ -17,6 +17,7 @@ function TopBar() {
     "/RAG": "RAG",
     "/cv": "CV Analyser",
     "/gradesanalyser": "Grades Analyser",
+    "/translation": "Translation",
   };
 
   const currentPath = window.location.pathname;
@@ -86,6 +87,9 @@ function TopBar() {
                 </Dropdown.Item>
                 <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
                   Grades Analyser
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="Translation" href="/translation">
+                  Translation
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

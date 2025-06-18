@@ -1,0 +1,108 @@
+.translationpage-header {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.translationpage-content {
+  height: 100vh;
+  margin-left: 15%;
+  position: relative;
+}
+
+.translationpage-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.translation-main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-group {
+  width: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-group button {
+  background-color: none;
+  border: 2px solid white;
+  padding: 5px 10px;
+  border-radius: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-icon {
+  fill: white !important;
+  padding-right: 8px;
+  height: 25px;
+}
+
+
+.select-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.translate-button :hover {
+  cursor: pointer;
+  opacity: 50%;
+}
+
+.textArea {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.textArea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* General styles for the select element */
+.select {
+  appearance: none; /* Remove default browser styles */
+  background-color: white; /* Background color */
+  border: 1px solid #ccc; /* Border styling */
+  padding: 8px 30px 8px 10px; /* Padding with space for icon */
+  font-size: 14px; /* Font size */
+  border-radius: 4px; /* Rounded corners */
+  width: 100%; /* Full width */
+  height: 40px; /* Height of select */
+  position: relative; /* Position relative for absolute positioning of icon */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.translate{
+  margin-top: 10px;
+}
+
+.copy-button, .clear-button{
+  margin-left: 20px;
+}
+
+.arrows{
+  margin-top: 10px;
+  margin-bottom: 10px
+}

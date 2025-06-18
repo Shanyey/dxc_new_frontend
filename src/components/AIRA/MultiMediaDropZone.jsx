@@ -216,7 +216,7 @@ const MultiMediaDropzone = ({
             marginTop: "1rem",
           }}
         >
-          <button style={{ maxWidth: '45%' }} variant="contained" onClick={uploadAllFiles}>
+          <button className="btn btn-success" variant="contained" onClick={uploadAllFiles}>
             {isUploading ? (
               <Oval
                 visible={true}
@@ -230,7 +230,7 @@ const MultiMediaDropzone = ({
               "Upload All Files"
             )}
           </button> 
-          <button style={{maxWidth: '45%'}} onClick={handleReset} disabled={isResetting}>
+          <button className="btn btn-danger" onClick={handleReset} disabled={isResetting}>
             {isResetting ? (
                 <Oval
                     visible={true}

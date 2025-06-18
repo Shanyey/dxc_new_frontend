@@ -9,6 +9,7 @@ import RAGPage from "./pages/RAG/RAG";
 import CVAnalyser from "./pages/CV/CVAnalyserPage";
 import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage";
 import AIRA from "./pages/AIRA/AIRA";
+import Translation from "./pages/Translation/TranslationPage";
 
 function App() {
   return (
@@ -21,10 +22,8 @@ function App() {
         <Route path="/RAG" element={<RAGPage />} />
         <Route path="/cv" element={<CVAnalyser />} />
         <Route path="/gradesanalyser" element={<GradesAnalyser />} />
-        {/* <Route path="/AIRA/input" element={<AIRAInputQuery />} />
-        <Route path="/AIRA/analyse" element={<AIRAAnalyseData />} />
-        <Route path="/AIRA/generate" element={<AIRAGenerate />} /> */}
         <Route path="/AIRA" element={<AIRA />} />
+        <Route path="/translation" element={<Translation />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

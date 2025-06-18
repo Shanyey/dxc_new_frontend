@@ -63,3 +63,6 @@
     fill: red; /* Change color on hover if desired */
   }
   
+  .upload-buttons{
+    gap: 10px;
+  }
