@@ -7,12 +7,10 @@ import "./TranslationPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Loader from "../components/Loader";
 
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CopyIcon from "../../assets/icons/content-copy-icon.png";
 import SingleArrow from "../../assets/icons/single-arrow-icon.png";
 import TranslationArrow from "../../assets/icons/translation-arrow-icon.png";
+import TrashIcon from "../../assets/icons/trash-icon.png";
 
 //temporarily disabled
 //import { auth } from "../Firebase";
@@ -77,15 +75,7 @@ function TranslationPage() {
     window.location.pathname.split("/").pop() === "9" ? "9" : "default"
   );
 
-  // Arrange languages in a 5x3 grid (columns fill top-down)
-  const columns = 3;
-  const rows = 5;
-  const gridLanguages = Array.from({ length: rows }, (_, rowIndex) => 
-    languages.filter((_, index) => index % rows === rowIndex)
-  ).flat();
 
-  const [isDropdownFromOpen, setIsDropdownFromOpen] = useState(false);
-  const [isDropdownToOpen, setIsDropdownToOpen] = useState(false);
   const [debouncedValue, setDebouncedValue] = useState('');
   const [isButtonClicked, setIsButtonClicked] = useState(true);
 
@@ -131,62 +121,6 @@ function TranslationPage() {
     
   }
 
-  const handleCustomLangaugeFromChange = (e) => {
-    setLangFrom(e.target.value); // Update input text state with the value from the input textarea
-    // setIsDropdownFromOpen(false);
-  };
-  const handleCustomLangaugeToChange = (e) => {
-    setCustomLanguage(e.target.value); // Update input text state with the value from the input textarea
-  };
-
-  const handleCustomToLanguageKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent default action to avoid adding a newline
-      console.log(langFrom); 
-      console.log(langTo); // Print the value of langTo to the console
-      handleSetLangToEnglish();
-      setIsDropdownToOpen(false); // Close dropdown
-    }
-  };
-
-  const handleCustomFromLanguageKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent default action to avoid adding a newline
-      console.log(langFrom); 
-      console.log(langTo); // Print the value of langTo to the console
-      setIsDropdownFromOpen(false); // Close dropdown
-    }
-  };
-
-  const handleDropDownFromButtonClick = () => {
-    setIsDropdownFromOpen(!isDropdownFromOpen);
-    setIsDropdownToOpen(false);
-  };
-
-  const handleLanguageFromClick = (language) => {
-    const selectedLanguageValue = language.value;
-    setLangFrom(selectedLanguageValue );
-    setCustomLanguage(selectedLanguageValue);
-    setIsDropdownFromOpen(false);
-    setIsChineseButtonClicked(false);
-    setIsMalayButtonClicked(false);
-    setIsTamilButtonClicked(false);
-    setIsButtonClicked(true)
-  };
-
-  const handleDropDownToButtonClick = () => {
-    setIsDropdownToOpen(!isDropdownToOpen);
-    setIsDropdownFromOpen(false);
-  };
-
-  const handleLanguageToClick = (language) => {
-    const selectedLanguageValue = language.value;
-    setLangTo(selectedLanguageValue);
-    setCustomLanguage(selectedLanguageValue);
-    setIsDropdownToOpen(false);
-
-  };
-
   const handleSwapToAndFrom = () => {
     setLangFrom((prevLangFrom) => {
       if (prevLangFrom === 'Detect language') {
@@ -219,7 +153,7 @@ function TranslationPage() {
     
     try {
       // Send the input text to detect the language directly with fetch
-      const response = await fetch(`${baseUrl}/detectLanguage`, {
+      const response = await fetch("http://127.0.0.1:5000/detectLanguage", {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -291,8 +225,8 @@ function TranslationPage() {
       try {
         setIsLoading(true);
         const endpoint = selectedTranslationType.value === "verbatim" 
-        ? `${baseUrl}/translatetext`
-        : `${baseUrl}/translatetext`;
+        ? "http://127.0.0.1:5000/translatetextverbatim"
+        : "http://127.0.0.1:5000/translatetext";
 
         // Direct fetch call to the endpoint
         const response = await fetch(endpoint, {
@@ -402,8 +336,8 @@ function TranslationPage() {
                       </div>
                     </div> */}
                   <button onClick={clearInputArea} className="clear-button">
-                  Clear
-                </button>
+                    <img src={TrashIcon} alt="Clear" />
+                  </button>
                 </div>
                 <textarea
                   id="input-textarea"
@@ -483,7 +417,7 @@ function TranslationPage() {
                     style={{ minWidth: 120 }}
                   />
                   <button className="copy-button" onClick={copyFunction} id="copy-button">
-                    <ContentCopyIcon className="content-copy" />
+                    <img src={CopyIcon} alt="Copy" />
                   </button>
                 </div>
                   

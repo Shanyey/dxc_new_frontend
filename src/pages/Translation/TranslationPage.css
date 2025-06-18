@@ -102,7 +102,9 @@
   margin-left: 20px;
 }
 
-.arrows{
+.arrows, .clear-button, .copy-button{
   margin-top: 10px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  border: none;
+  background-color: transparent;
 }
