@@ -39,10 +39,6 @@ function HomePage() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Access-Control-Allow-Origin":
-              "https://dxcfrontend2.azurewebsites.net",
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
           },
         }
       );
@@ -87,8 +83,7 @@ function HomePage() {
     // Handle file selection here
     const file = e.target.files[0];
     if (file) {
-      // Do something with the file
-      console.log("Selected file:", file);
+      setFiles((prevFiles) => [...prevFiles, file]);
     }
   };
 
