@@ -24,8 +24,8 @@ const RagPage = () => {
 
   const handleReset = () => {
     axios
-      .post(`${baseUrl}/clear_db`, {
-        username: userInfo.userMail,
+      .post(`${baseUrl}/test-rag/clear_db`, {
+        userEmail: user.email,
       })
       .then((response) => {
         console.log("Database cleared:", response.data.status);
@@ -112,16 +112,32 @@ const RagPage = () => {
 
     try {
       const response = await axios.post(
-        `${baseUrl}/test-rag`,
+        `${baseUrl}/test-rag/submit`,
         {
           query,
           chat_history: chatHistory,
-          username: user.email,
+          userEmail: user.email,
         },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
+      console.log("Response from server:", response.data);
+
+      const res = response.data;
+      const newAssistantMessage = {
+        role: "assistant",
+        content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}`,
+      };
+
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        newAssistantMessage,
+      ]);
+
+      if (chatBoxRef.current) {
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+      }
     } catch (error) {
       console.error("Error querying PDF:", error);
       setIsLoading(false);
