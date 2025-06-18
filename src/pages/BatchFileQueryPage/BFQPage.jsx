@@ -18,7 +18,9 @@ function BatchFileQueryPage() {
       label: "GPT-4o-mini",
       deploymentName: "gpt4-o-mini",
     },
-    { value: "gpt-4o", label: "GPT-4o", deploymentName: "gpt4o" },
+    { value: "gpt-4o", 
+      label: "GPT-4o", 
+      deploymentName: "gpt4o" },
   ];
 
   // Default model selected is GPT4o mini
@@ -171,8 +173,8 @@ function BatchFileQueryPage() {
       <div className="page">
         <TopBar />
         <div className="batchfilequery-main-content">
-          <div className="BFQIntro">
-            <h2>Batch File Query</h2>
+          <div>
+            <h1 className="BFQIntro">Batch File Query</h1>
           </div>
 
           <div className="select-container">
@@ -271,9 +273,9 @@ function BatchFileQueryPage() {
             files={files}
             setFiles={setFiles}
           />
-          <br></br>
-
-          <button className="submit-button" onClick={handleSubmit} />
+          <button type="submit" className="sendButton" aria-label="Send Message" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </>
