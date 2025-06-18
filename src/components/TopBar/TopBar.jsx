@@ -5,23 +5,18 @@ import SettingsIcon from "../../assets/icons/settings.png";
 import UserManual from "../../assets/icons/user-manual.png";
 import DXCLogo from "../../assets/dxc-black.png";
 import Dropdown from "react-bootstrap/Dropdown";
+import routes from "./routes.jsx";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 function TopBar() {
   const navigate = useNavigate();
-  const pathToTool = {
-    "/chat": "Chat",
-    "/batchfilequery": "Batch File Query",
-    "/AIRA": "AIRA",
-    "/RAG": "RAG",
-    "/cv": "CV Analyser",
-    "/gradesanalyser": "Grades Analyser",
-    "/translation": "Translation",
-  };
+
+  // Create path-to-label mapping
+  const pathToTool = Object.fromEntries(routes.map(route => [route.path, route.label]));
 
   const currentPath = window.location.pathname;
-  const [selectedItem, setSelectedItem] = useState(pathToTool[currentPath] || "Chat");
+  const [selectedItem, setSelectedItem] = useState(pathToTool[currentPath] || toolRoutes[0].label);
 
   const handleSignOut = async () => {
     const auth = getAuth();
@@ -70,27 +65,11 @@ function TopBar() {
                 Tools
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item eventKey="Chat" href="/chat">
-                  Chat
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="Batch File Query" href="/batchfilequery">
-                  Batch File Query
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="AIRA" href="/AIRA">
-                  AIRA
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="RAG" href="/RAG">
-                  RAG
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="CV Analyser" href="/cv">
-                  CV Analyser
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="Grades Analyser" href="/gradesanalyser">
-                  Grades Analyser
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="Translation" href="/translation">
-                  Translation
-                </Dropdown.Item>
+                {routes.map(route => (
+                  <Dropdown.Item eventKey={route.label} href={route.path} key={route.path}>
+                    {route.label}
+                  </Dropdown.Item>
+                ))}
               </Dropdown.Menu>
             </Dropdown>
           </div>

@@ -10,6 +10,7 @@ import CVAnalyser from "./pages/CV/CVAnalyserPage";
 import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage";
 import AIRA from "./pages/AIRA/AIRA";
 import Translation from "./pages/Translation/TranslationPage";
+import VideoGeneration from "./pages/VideoGeneration/VideoGeneration";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/gradesanalyser" element={<GradesAnalyser />} />
         <Route path="/AIRA" element={<AIRA />} />
         <Route path="/translation" element={<Translation />} />
+        <Route path="/videogeneration" element={<VideoGeneration />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
