@@ -1,0 +1,60 @@
+.parameter-selection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.select-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.select-time-dropdown{
+    width: 45px;
+    text-align: center;
+    border-radius: 5px;;
+}
+
+.vid-gen-prompt{
+    font-weight: bold;
+}
+
+.promptContainer{
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.promptInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sendPrompt{
+  padding: 12px 24px;
+  background-color: #45a049;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.video-viewer{
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.video-display{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
