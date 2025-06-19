@@ -11,6 +11,7 @@ import GradesAnalyser from "./pages/GradeAnalyser/GradesAnalyserPage";
 import AIRA from "./pages/AIRA/AIRA";
 import Translation from "./pages/Translation/TranslationPage";
 import VideoGeneration from "./pages/VideoGeneration/VideoGeneration";
+//import VideoGeneration from "./pages/VideoGeneration/VideoGeneration";
 
 function App() {
   return (
