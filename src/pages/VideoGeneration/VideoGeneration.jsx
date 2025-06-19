@@ -23,6 +23,7 @@ const VideoGeneration = () => {
       const response = await axios.post(
         `${baseUrl}/video-generator`,
         {
+          user_id: auth.currentUser.uid,
           prompt: query,
           duration: top_k,
         },
