@@ -5,6 +5,7 @@ import NextButton from "./NextButton";
 import Stepper from 'react-stepper-horizontal';
 import { Button } from '@mui/material';
 import CircularProgress from "@mui/material/CircularProgress";
+import DownArrow from "../../assets/icons/down-arrow.png";
 
 function DeepInsightsDisplay({ 
   overview, 
@@ -166,13 +167,14 @@ const toggleUserArticleInclusion = (index) => {
                 <div>
                   <button
                     variant="contained"
-                    className="btn option"
-                    disabled={!!mediaLoading[index]}
+                    className="btn btn-option analyze-media-btn"
+                    disabled={!!mediaLoading[index] || !!mediaAnalysis[index]}
                     onClick={() => handleAnalyzeMedia(index, article.images, article.title, query)}
                   >
                     {mediaLoading[index]
                       ? <CircularProgress size={20} />
                       : "Analyze source media"}
+                      <img className="down-arrow-btn" src={DownArrow}  />
                   </button>
                   <br/> <br/>
                   {mediaAnalysis[index] && (
@@ -329,7 +331,8 @@ const toggleUserArticleInclusion = (index) => {
                     <div>
                       <button
                         variant="contained"
-                        disabled={!!mediaLoading[userKey]}
+                        className="analyze-media-btn"
+                        disabled={!!mediaLoading[userKey] || !!mediaAnalysis[userKey]}
                         onClick={() =>
                           handleAnalyzeMedia(userKey, article.images, query)
                         }

@@ -66,9 +66,6 @@ const VideoGeneration = () => {
     return (
         <div className="page">
             <TopBar />
-            <div className="vid-gen-header">
-                <h1 className="title">Video Generation</h1>
-            </div>
             <div className="parameter-selection">
                 <div className="select-btn">
                     <span className="select-time">Select Length of Video: </span>

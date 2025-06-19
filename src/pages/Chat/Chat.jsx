@@ -141,7 +141,7 @@ function HomePage() {
                         type="button"
                         className="dropdown-item chat-dropdown-item"
                         onClick={() => {
-                          setInput("Create an image");
+                          setInput("Create an image of");
                           setShowDropdown(false);
                         }}
                       >
@@ -151,11 +151,11 @@ function HomePage() {
                         type="button"
                         className="dropdown-item chat-dropdown-item"
                         onClick={() => {
-                          setInput("Search real-time");
+                          setInput("Search on the web to");
                           setShowDropdown(false);
                         }}
                       >
-                        Real Time Search
+                        Web Search
                       </button>
                     </div>
                   </div>

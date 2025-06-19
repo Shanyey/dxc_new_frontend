@@ -239,14 +239,6 @@ function TranslationPage() {
       // Set the translated text
       setTranslatedText(translationResult);
 
-      // Optional: Add the query details to your log or UI
-      // addQuery(
-      //   inputText,
-      //   translationResult,
-      //   userInfo,
-      //   selectedModel.value,
-      //   null
-      // );
       setIsLoading(false);
     } catch (error) {
       console.error("Translation failed:", error);
@@ -257,7 +249,6 @@ function TranslationPage() {
   return (
     <div className="page">
       <TopBar />
-      <div className="translationpage-header">Translation</div>
       <div className="translationpage-content">
         <div className="translationpage-top-bar">
           <div className="select-btn">
@@ -281,16 +272,15 @@ function TranslationPage() {
             />
           </div>
         </div>
-        <div className="translation-main-content">
-          <div>
-            <div>
+        <div>
+          <div className="translation-textarea">
               <div id="left-side">
-                <div>
+                <div className="detect-language-btns">
                   <select
                     id="from-language-dropdown"
                     value={langFrom}
                     onChange={(e) => setLangFrom(e.target.value)}
-                    className="text-black px-2 py-2 mb-0 border rounded bg-inherit hover:bg-gray-100"
+                    className="detect-language"
                   >
                     <option value="Detect language">Detect language</option>
                     {languages.map((lang, idx) => (
@@ -299,30 +289,6 @@ function TranslationPage() {
                       </option>
                     ))}
                   </select>
-                  {/* <button id="dropdownbutton1" onClick={handleDropDownFromButtonClick} className="bg-inherit hover:bg-gray-100 hover:border-transparent">
-                    {isDropdownFromOpen ? <ExpandLessIcon className="h-6 w-6 text-gray-400" /> : <ExpandMoreIcon className="h-6 w-6 text-gray-400" />}
-                  </button>
-                  {isDropdownFromOpen && (
-                    <div className="absolute mt-10 w-full bg-white border border-gray-300 rounded shadow-lg max-h-80">
-                      <textarea 
-                        className="textArea w-full text-sm"
-                        placeholder="Input custom language"
-                        onChange={handleCustomLangaugeFromChange}
-                        onKeyDown={handleCustomFromLanguageKeyPress} // Handle Enter key press
-                      >
-                      </textarea>
-                      <div className="grid grid-cols-3 gap-2 p-2">
-                        {gridLanguages.map((language, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleLanguageFromClick(language)}
-                            className="bg-slate-50 w-full text-left p-2 hover:bg-slate-200"
-                          >
-                            {language && language.value}
-                          </button>
-                          ))}
-                      </div>
-                    </div> */}
                   <button onClick={clearInputArea} className="clear-button">
                     <img src={TrashIcon} alt="Clear" />
                   </button>
@@ -333,63 +299,29 @@ function TranslationPage() {
                   onChange={handleInputChange}
                   tabIndex="0"
                   placeholder="Input text to translate"
-                  className="textArea w-full overflow-y-hidden h-lvh "
+                  className="textArea"
                 />
               </div>
-              <div
-                id="right-side"
-                className="flex flex-col w-1/2 relative pr-10"
-              >
-                <div className="flex relative">
-                  <button className="arrows">
-                    <img
-                      src={
-                        langFrom === "Detect language"
-                          ? SingleArrow
-                          : TranslationArrow
-                      }
-                      alt="Arrow"
-                    />
-                  </button>
-                  {/* <button
-                  id = "english-button"
-                  onClick={handleSetLangToEnglish}
-                  className={`text-black px-2 bg-inherit py-2 mb-0 hover:bg-gray-100 hover:border-transparent ${isButtonClicked ? 'border-b-4 border-indigo-500' : 'bg-inherit'}`}
-                  >
-                    English
-                  </button>
-                  <button id="dropdownbutton2" onClick={handleDropDownToButtonClick} className="bg-inherit hover:bg-gray-100 hover:border-transparent">
-                    {isDropdownToOpen ? <ExpandLessIcon className="h-6 w-6 text-gray-400" /> : <ExpandMoreIcon className="h-6 w-6 text-gray-400" />}
-                  </button>
-                  {isDropdownToOpen && (
-                    <div className="absolute mt-10 w-full bg-white border border-gray-300 rounded shadow-lg max-h-80">
-                      <textarea 
-                        className="textArea w-full text-sm"
-                        placeholder="Input custom language"
-                        value={customLanguage}
-                        onChange={handleCustomLangaugeToChange}
-                        onKeyDown={handleCustomToLanguageKeyPress} // Handle Enter key press
-                      >
-                      </textarea>
-                      <div className="grid grid-cols-3 gap-2 p-2">
-                        {gridLanguages.map((language, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleLanguageToClick(language)}
-                            className="bg-slate-50 w-full text-left p-2 hover:border-transparent hover:bg-slate-200"
-                          >
-                            {language.value}
-                          </button>
-                        ))}
-                      </div>
-                    </div> */}
-                  <div className="flex items-center gap-2">
+              
+              <button className="arrows">
+                <img
+                  src={
+                    langFrom === "Detect language"
+                      ? SingleArrow
+                      : TranslationArrow
+                  }
+                  alt="Arrow"
+                />
+              </button>
+              
+                <div id="right-side">
+                  <div className="translated-language">
                     {/* Dropdown for language selection */}
                     <select
                       id="to-language-dropdown"
                       value={langTo}
                       onChange={(e) => setLangTo(e.target.value)}
-                      className="text-black px-2 py-2 mb-0 border rounded bg-inherit hover:bg-gray-100"
+                      className="select-language"
                     >
                       <option value="English">English</option>
                       {languages
@@ -410,7 +342,7 @@ function TranslationPage() {
                         if (customLanguage.trim())
                           setLangTo(customLanguage.trim());
                       }}
-                      className="text-black px-2 py-2 mb-0 border rounded bg-inherit hover:bg-gray-100"
+                      className="custom-language"
                       style={{ minWidth: 120 }}
                     />
                     <button
@@ -421,27 +353,24 @@ function TranslationPage() {
                       <img src={CopyIcon} alt="Copy" />
                     </button>
                   </div>
+                    <textarea
+                      id="output-textarea"
+                      value={translatedText}
+                      tabIndex="0"
+                      placeholder="Translation"
+                      className="textArea"
+                      readOnly
+                    />
                 </div>
-                <textarea
-                  id="output-textarea"
-                  value={translatedText}
-                  tabIndex="0"
-                  placeholder="Translation"
-                  className="textArea w-full overflow-y-hidden h-lvh"
-                  readOnly
-                />
-              </div>
-            </div>
-            {/* {isLoading ? <Loader>Translating text, please wait...</Loader> : null} */}
-            <button
-              id="translate-button"
-              className="btn btn-success translate"
-              onClick={handleTranslate}
-            >
-              Translate
-            </button>
           </div>
         </div>
+        <button
+          id="translate-button"
+          className="btn btn-success translate"
+          onClick={handleTranslate}
+        >
+          Translate
+        </button>
       </div>
     </div>
   );

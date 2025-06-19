@@ -185,8 +185,6 @@ const RagPage = () => {
     <div className="page">
       <TopBar />
       <div className="container-fluid p-4">
-        <h1 className="title">Retrieval Augmented Generation</h1>
-
         <div className="upload-section">
           <Dropzone
             acceptedFileTypes={["application/pdf", "text/plain"]}
@@ -214,16 +212,6 @@ const RagPage = () => {
 
           {isUploading && (
             <div className="centeredContent">
-              {/* <Oval
-                height={40}
-                width={40}
-                color="#4fa94d"
-                visible={true}
-                ariaLabel="oval-loading"
-                secondaryColor="#4fa94d"
-                strokeWidth={2}
-                strokeWidthSecondary={2}
-              /> */}
               <p>Uploading...</p>
             </div>
           )}

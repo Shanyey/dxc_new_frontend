@@ -6,8 +6,8 @@ import InputQuery from "../../components/AIRA/AIRA_InputQuery";
 import DeepInsightsDisplay from "../../components/AIRA/DeepInsightsDisplay";
 import DocumentsDisplay from "../../components/AIRA/DocumentsDisplay";
 import TopBar from "../../components/TopBar/TopBar";
-import Spinner from "../../assets/icons/spinner.gif"
-
+import { SyncLoader } from "react-spinners"; 
+ 
 function AIRA() {
     const baseUrl = "http://127.0.0.1:5000";
 
@@ -435,13 +435,16 @@ function AIRA() {
             <div className="page">
                 <TopBar />
              <div className="container-fluid p-4">
-                <h1 className="title">AI Research Assistant (AIRA)</h1>
                 </div>
                 { isLoading ? (
                         <div className="loading-container">
                             Currently Retrieving Data...
                             <div className="loading-spinner">
-                                <Spinner    />
+                                <SyncLoader
+                                    color="#4caf50"
+                                    loading={isLoading}
+                                    size={10}
+                                />
                             </div>
                         </div>
                     ) : (
