@@ -30,10 +30,8 @@ const VideoGeneration = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("Video generation response:", response.data);
-      //   const blob = await response.blob();
-      //   const url = URL.createObjectURL(blob);
-      //   setVideoUrl(url);
+      console.log("Video URL:", response.data.video_url);
+      setVideoUrl(response.data.video_url);
     } catch (error) {
       console.error("Error generating video:", error);
       alert("Failed to generate video. Please try again.");
