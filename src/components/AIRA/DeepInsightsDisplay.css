@@ -135,3 +135,14 @@
 .toggle-button.exclude {
     background-color: #f44336; /* Red */
 }
+
+.analyze-media-btn {
+    margin-top: 10px;
+    border: none;
+}
+
+.down-arrow-btn{
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+}

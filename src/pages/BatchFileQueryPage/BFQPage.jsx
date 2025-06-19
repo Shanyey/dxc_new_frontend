@@ -11,6 +11,16 @@ function BatchFileQueryPage() {
   const [userInfo, setUserInfo] = useState();
   const [tooltipEnabled, setTooltipEnabled] = useState(false);
   const [files, setFiles] = useState([]);
+  const chatBoxRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false); // Chat loading state
+  const [query, setQuery] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+  useEffect(() => {
+      if (chatBoxRef.current) {
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+      }
+    }, [chatHistory]);
+
   // For users to select the 3 different GPT models: String to identify the model, label: String for Select Dropdown option at the top, deploymentName: to initialise the correct deployment in Azure
   const models = [
     {
@@ -41,8 +51,13 @@ function BatchFileQueryPage() {
   const functions = [
     {
       value: "Summarize the following text: ",
-      label: "Summarization",
+      label: "Individual File Summarization",
       naming: "sum",
+    },
+    {
+      value: "Create an overall summary for the following text: ",
+      label: "Collective File Summarization",
+      naming: "colsum",
     },
     {
       value: "Extract the keywords from the following text: ",
@@ -69,6 +84,11 @@ function BatchFileQueryPage() {
       value: updatedPrompt + ":",
       label: "Personalise Prompt",
       naming: "prompt",
+    },
+    {
+      value: updatedPrompt + ":",
+      label: "Image Query",
+      naming: "imgquery",
     },
   ];
 
@@ -101,33 +121,6 @@ function BatchFileQueryPage() {
   function handlePersonalisedPromptChange(e) {
     setPersonalisedPrompt(e.target.value);
   }
-
-  // --------------------------- UseEffect ---------------------------
-  const isMounted = useRef(false);
-
-  // useEffect to trigger change of language only upon user input and not during initial render
-  useEffect(() => {
-    if (isMounted.current) {
-      setFunc({ ...func, value: "Translate to " + updatedLanguage + ":" });
-    } else {
-      isMounted.current = false;
-    }
-  }, [updatedLanguage]);
-
-  // useEffect to trigger change of personalised prompt only upon user input and not during initial render
-  useEffect(() => {
-    if (isMounted.current) {
-      setFunc({
-        ...func,
-        value:
-          updatedPrompt +
-          ". Please do not give any information relating to html tags." +
-          ":",
-      });
-    } else {
-      isMounted.current = true;
-    }
-  }, [updatedPrompt]);
 
   const handleSubmit = async () => {
     // console.log("Files submitted:", files);
@@ -166,17 +159,89 @@ function BatchFileQueryPage() {
     link.click();
     link.remove();
     window.URL.revokeObjectURL(url);
-  };
+    };
 
+    const handleChatSubmit = async (e) => {
+      e.preventDefault();
+      if (!query.trim()) return;
+
+      const newUserMessage = { role: "user", content: query };
+
+      setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
+
+      setQuery("");
+
+      setIsLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${baseUrl}/test-rag/submit`,
+        {
+          query,
+          chat_history: chatHistory,
+          userEmail: user.email,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("Response from server:", response.data);
+
+      const res = response.data;
+      const newAssistantMessage = {
+        role: "assistant",
+        content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}`,
+        };
+
+        setChatHistory((prevChatHistory) => [
+          ...prevChatHistory,
+          newAssistantMessage,
+        ]);
+
+        if (chatBoxRef.current) {
+          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+      } catch (error) {
+        console.error("Error querying PDF:", error);
+        setIsLoading(false);
+        return;
+      }
+    }
+
+
+  // --------------------------- UseEffect ---------------------------
+  const isMounted = useRef(false);
+
+  // useEffect to trigger change of language only upon user input and not during initial render
+  useEffect(() => {
+    if (isMounted.current) {
+      setFunc({ ...func, value: "Translate to " + updatedLanguage + ":" });
+    } else {
+      isMounted.current = false;
+    }
+  }, [updatedLanguage]);
+
+  // useEffect to trigger change of personalised prompt only upon user input and not during initial render
+  useEffect(() => {
+    if (isMounted.current) {
+      setFunc({
+        ...func,
+        value:
+          updatedPrompt +
+          ". Please do not give any information relating to html tags." +
+          ":",
+      });
+    } else {
+      isMounted.current = true;
+    }
+  }, [updatedPrompt]);
+
+  
   return (
     <>
       <div className="page">
         <TopBar />
         <div className="batchfilequery-main-content">
-          <div>
-            <h1 className="BFQIntro">Batch File Query</h1>
-          </div>
-
           <div className="select-container">
             <div className="select-btn">
               <span className="select-text">Select function: </span>
@@ -257,16 +322,33 @@ function BatchFileQueryPage() {
             </div>
           )}
 
-          {/* To be reinstalled when BatchProcessing is up
-          //Use BatchProcessing component 
-          <MyDropzone
-            feature={func.value}
-            naming={func.naming}
-            deploymentId={selectedOption.deploymentName}
-            userInfo={userInfo}
-            model={selectedOption.value}
-          />
-          */}
+          {/* {(func.label == "Image Query") && (
+            <div>
+              <div className="translation-container">
+                <label>Input your own prompt:</label>
+                <input
+                  type="text"
+                  placeholder="For eg, 'Extract the personnel names mentioned'"
+                  value={personalisedPrompt}
+                  onChange={handlePersonalisedPromptChange}
+                  id="personalised-input"
+                  className="translation-input"
+                />
+                <button
+                  className="translation-button"
+                  onClick={handlePersonalisedPromptClick}
+                  id="personalised-input-button"
+                >
+                  Set Prompt
+                </button>
+              </div>
+              <div className="translation-container">
+                <label className="font-bold text-sm">
+                  Your prompt: {updatedPrompt}
+                </label>
+              </div>
+            </div>
+          )} */}
 
           <Dropzone
             acceptedFileTypes={["application/pdf", "text/plain"]}
@@ -277,7 +359,45 @@ function BatchFileQueryPage() {
             Submit
           </button>
         </div>
+
+        {/* only renders if user chooses image query */}
+        {(func.label == "Image Query") && (
+        <div>
+        <form onSubmit={handleChatSubmit} className="inputContainer">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Ask a question about the Image..."
+              className="chatInput"
+              aria-label="Chat Input"
+            />
+            <button
+              type="submit"
+              className="sendButton"
+              aria-label="Send Message"
+            >
+              Send
+            </button>
+        </form>
+        <div ref={chatBoxRef} className="chatBox">
+          {chatHistory.map((msg, index) => (
+            <div
+              key={msg.id || index}
+              className={`message ${
+                msg.role === "user" ? "user" : "assistant"
+              }`}
+              >
+              <p>
+                <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>{" "}
+                {msg.content}
+              </p>
+            </div>
+            ))} 
+          </div>
       </div>
+      )}
+    </div>
     </>
   );
 }

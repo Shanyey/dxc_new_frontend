@@ -18,6 +18,8 @@ function TopBar() {
   const currentPath = window.location.pathname;
   const [selectedItem, setSelectedItem] = useState(pathToTool[currentPath] || toolRoutes[0].label);
 
+  const [selectedModel, setSelectedModel] = useState("GPT-4o-mini");
+
   const handleSignOut = async () => {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -39,8 +41,12 @@ function TopBar() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleSelect = (eventKey) => {
+  const handleSelectFeature = (eventKey) => {
     setSelectedItem(eventKey);
+  };
+
+  const handleSelectModel = (eventKey) => {
+    setSelectedModel(eventKey);
   };
 
   return (
@@ -56,7 +62,7 @@ function TopBar() {
             />
           </div>
           <div className="dropdown">
-            <Dropdown onSelect={handleSelect}>
+            <Dropdown onSelect={handleSelectFeature}>
               <Dropdown.Toggle
                 variant="secondary"
                 id="dropdown-basic"
@@ -70,6 +76,21 @@ function TopBar() {
                     {route.label}
                   </Dropdown.Item>
                 ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div>
+            <Dropdown onSelect={handleSelectModel}>
+              <Dropdown.Toggle
+                variant="secondary"
+                id="dropdown-basic"
+                className="btn btn-primary"
+              >
+                {selectedModel}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="GPT-4o-mini">GPT-4o-mini</Dropdown.Item>
+                <Dropdown.Item eventKey="GPT-4">GPT-4</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

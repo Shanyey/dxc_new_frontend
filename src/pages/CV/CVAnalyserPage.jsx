@@ -75,7 +75,6 @@ const CVAnalyser = () => {
     <div className="page">
       <TopBar />
       <div className="container-fluid p-4">
-        <h1 className="title">CV Analyser</h1>
         <div className="upload-section">
           <div className="upload-container">
             <div className="upload-box">

@@ -76,8 +76,6 @@ const GradesAnalyser = () => {
     <div className="page">
       <TopBar />
       <div className="container-fluid p-4">
-        <h1 className="title">Grades Analyser</h1>
-
         <div className="upload-section">
           <div className="upload-container">
             <div className="upload-box">
