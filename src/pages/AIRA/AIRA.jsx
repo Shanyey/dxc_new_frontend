@@ -45,6 +45,10 @@ function AIRA() {
         setTopK(k)
     };
 
+    const handleBackToInputQuery = () => {
+        setStep(1)
+    }
+
     const [showGuide, setShowGuide] = useState(false);
     const handleCloseGuide = () => setShowGuide(false);
 
@@ -404,6 +408,7 @@ function AIRA() {
                         query={query}
                         handleDocumentsGeneration={handleDocumentsGeneration}
                         addMediaAnalysis={handleAddMediaAnalysis}
+                        handleBackToInputQuery={handleBackToInputQuery}
                     />
                     </>
                 );

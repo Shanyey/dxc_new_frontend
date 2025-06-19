@@ -6,6 +6,7 @@ import Stepper from 'react-stepper-horizontal';
 import { Button } from '@mui/material';
 import CircularProgress from "@mui/material/CircularProgress";
 import DownArrow from "../../assets/icons/down-arrow.png";
+import UpArrow from "../../assets/icons/up-arrow.png";
 
 function DeepInsightsDisplay({ 
   overview, 
@@ -19,6 +20,7 @@ function DeepInsightsDisplay({
   query,
   handleDocumentsGeneration,
   addMediaAnalysis,
+  handleBackToInputQuery,
 }) {
   
   //const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -141,7 +143,7 @@ const toggleUserArticleInclusion = (index) => {
             <h3 className="insights-header">
               {index+1}{") "}{article.title}
               <p className="score-text">
-                [Relevance Score: {article.score.toFixed(2)}]
+                [Relevance Score (out of 5): {article.score.toFixed(2)}]
               </p>
             </h3>
             <p>{article.summary}</p>
@@ -168,16 +170,33 @@ const toggleUserArticleInclusion = (index) => {
                   <button
                     variant="contained"
                     className="btn btn-option analyze-media-btn"
-                    disabled={!!mediaLoading[index] || !!mediaAnalysis[index]}
-                    onClick={() => handleAnalyzeMedia(index, article.images, article.title, query)}
+                    disabled={mediaLoading[index]}
+                    onClick={() => {
+                      if (mediaAnalysis[index]) {
+                        // Hide analysis if already shown
+                        setMediaAnalysis(prev => ({ ...prev, [index]: undefined }));
+                      } else {
+                        handleAnalyzeMedia(index, article.images, article.title, query);
+                      }
+                    }}
                   >
-                    {mediaLoading[index]
-                      ? <CircularProgress size={20} />
-                      : "Analyze source media"}
-                      <img className="down-arrow-btn" src={DownArrow}  />
+                    {mediaLoading[index] ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                        Analyze source media
+                        <img
+                          className="down-arrow-btn"
+                          src={mediaAnalysis[index] ? UpArrow : DownArrow}
+                          alt={mediaAnalysis[index] ? "Hide analysis" : "Show analysis"}
+                        />
+                      </span>
+                    )}
                   </button>
                   <br/> <br/>
                   {mediaAnalysis[index] && (
+                    <div>
+                    <p>The media here has been filtered and may not be accurate. To view all source media, see full article using the link above.</p>
                     <div
                       className="media-analysis-card-group"
                       style={{
@@ -189,7 +208,7 @@ const toggleUserArticleInclusion = (index) => {
                         paddingBottom: "1rem",
                         scrollbarWidth: "thin"
                       }}
-                    >
+                    > 
                       {article.images.map((img, idx) => {
                         const key = `${index}-${idx}`;
                         const analysisObj = mediaAnalysis[index]?.[idx];
@@ -287,6 +306,7 @@ const toggleUserArticleInclusion = (index) => {
                         );
                       })}
                     </div>
+                  </div>
                   )}
                 </div>
               )}
@@ -436,7 +456,7 @@ const toggleUserArticleInclusion = (index) => {
               {index+1}{") "}{video.title}{" "}
             </h3>
             <p className="score-text">
-                [Relevance Score: {video.score.toFixed(2)}]
+                [Relevance Score (out of 5): {video.score.toFixed(2)}]
             </p>
             <YouTubeVideoCard
                 key={index}
@@ -523,6 +543,13 @@ const toggleUserArticleInclusion = (index) => {
         </div>
       )}
       <div className="insights-btn-container">
+        <button
+          className="btn btn-primary"
+          style={{ textDecoration: 'none', color: 'white' }}
+          onClick={handleBackToInputQuery}
+        >
+          Back to AIRA
+        </button>
         <NextButton
           buttonText="Generate report/ppt →"
           onClick={(e) =>
