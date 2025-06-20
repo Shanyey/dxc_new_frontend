@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./DeepInsightsDisplay.css";
+import "./AIRA_InsightsDisplay.css";
 import YouTubeVideoCard from "./YouTubeVideoCard";
-import NextButton from "./NextButton";
 import Stepper from 'react-stepper-horizontal';
-import { Button } from '@mui/material';
 import CircularProgress from "@mui/material/CircularProgress";
 import DownArrow from "../../assets/icons/down-arrow.png";
 import UpArrow from "../../assets/icons/up-arrow.png";
@@ -20,7 +18,7 @@ function DeepInsightsDisplay({
   query,
   handleDocumentsGeneration,
   addMediaAnalysis,
-  handleBackToInputQuery,
+  handleBackToPreviousStep,
 }) {
   
   //const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -169,13 +167,13 @@ const toggleUserArticleInclusion = (index) => {
                 <div>
                   <button
                     variant="contained"
-                    className="btn btn-option analyze-media-btn"
+                    className="analyze-media-btn"
                     disabled={mediaLoading[index]}
                     onClick={() => {
                       if (mediaAnalysis[index]) {
                         // Hide analysis if already shown
-                        setMediaAnalysis(prev => ({ ...prev, [index]: undefined }));
-                      } else {
+                        (prev => ({ ...prev, [index]: undefined }));
+                      } else {setMediaAnalysis
                         handleAnalyzeMedia(index, article.images, article.title, query);
                       }
                     }}
@@ -326,6 +324,7 @@ const toggleUserArticleInclusion = (index) => {
                     {index+1}{") "}{article.title}
                   </h3>
                   <p>{article.summary}</p>
+                  <div className="provided-insights-bottom">
                   {article.url && (
                       <a href={article.url} target="_blank" rel="noopener noreferrer">
                         See Full Article
@@ -334,45 +333,79 @@ const toggleUserArticleInclusion = (index) => {
                   <button
                     variant="contained"
                     onClick={() => toggleUserArticleInclusion(index)}
-                    sx={{
-                      float: "right",
-                      width: "30%",
-                      marginBottom: 2,
-                    }}
+                    className="btn option"
                     style={{
                       backgroundColor: userArticleInclusions[index] ? "#4caf50" : "#f44336",
                       color: "#fff"
                     }}
                   >
-                    {userArticleInclusions[index] ? "Exclude in Report" : "Add to Report"}
+                    {userArticleInclusions[index] ? "Exclude from Report" : "Add to Report"}
                   </button>
+                  </div>
                   {/* ANALYZE MEDIA SECTION FOR USER PROVIDED ARTICLES */}
                   {article.images && article.images.length > 0 && (
                     <div>
                       <button
                         variant="contained"
                         className="analyze-media-btn"
-                        disabled={!!mediaLoading[userKey] || !!mediaAnalysis[userKey]}
-                        onClick={() =>
-                          handleAnalyzeMedia(userKey, article.images, query)
-                        }
+                        disabled={!!mediaLoading[userKey]}
+                        onClick={() => {
+                          if (mediaAnalysis[userKey]) {
+                            // Hide analysis if already shown
+                            (prev => ({ ...prev, [index]: undefined }));
+                          } else {setMediaAnalysis
+                            handleAnalyzeMedia(index, article.images, article.title, query);
+                          }
+                        }}
                         sx={{ float: "left", marginBottom: 2 }}
                       >
                         {mediaLoading[userKey] ? (
                           <CircularProgress size={20} />
                         ) : (
-                          "Analyze source media"
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                            Analyze source media
+                            <img
+                              className="down-arrow-btn"
+                              src={mediaAnalysis[index] ? UpArrow : DownArrow}
+                              alt={mediaAnalysis[index] ? "Hide analysis" : "Show analysis"}
+                            />
+                          </span>
                         )}
                       </button>
                       <br /> <br />
                       {mediaAnalysis[userKey] && (
+                        <div>
+                          <p>The media here has been filtered and may not be accurate. To view all source media, see full article using the link above.</p>
                         <div
-                          className="media-analysis-container"
-                          style={{ marginTop: "1rem" }}
+                          className="media-analysis-card-group"
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: "1rem",
+                            marginTop: "1rem",
+                            overflowX: "auto",
+                            paddingBottom: "1rem",
+                            scrollbarWidth: "thin"
+                        }}
                         >
                           {article.images.map((img, idx) => {
                             // Create a unique key for this media item using userKey.
                             const key = `${userKey}-${idx}`;
+                            const analysisObj = mediaAnalysis[userKey]?.[idx];
+                            const analysisText = analysisObj?.analysis?.toLowerCase() || "";
+
+                            if (
+                              !analysisObj ||
+                              !analysisText.trim() ||
+                              analysisText.includes("unrelated") ||
+                              analysisText.includes("not directly related") ||
+                              /\bno\b/.test(analysisText) ||
+                              /\bnot\b/.test(analysisText) ||
+                              analysisText.includes("can't")
+                            ) {
+                              return null;
+                            }
+
                             return (
                               <div
                                 key={idx}
@@ -403,28 +436,23 @@ const toggleUserArticleInclusion = (index) => {
                                     backgroundColor: "#f9f9f9",
                                   }}
                                 >
-                                  {mediaAnalysis[userKey] && mediaAnalysis[userKey][idx]
-                                    ? mediaAnalysis[userKey][idx].analysis
-                                    : "No analysis available"}
+                                  {analysisObj.analysis}
                                 </div>
                                 <button
                                   variant="outlined"
                                   onClick={() => {
-                                    const analysisObj = {
+                                    const analysisData = {
                                       articleTitle: article.title,
                                       source: article.source || "Unknown source",
                                       image_url: img,
                                       image_urls: article.images,
-                                      analysis:
-                                        mediaAnalysis[userKey] && mediaAnalysis[userKey][idx]
-                                          ? mediaAnalysis[userKey][idx].analysis
-                                          : "No analysis available",
+                                      analysis: analysisObj.analysis,
                                     };
                                     if (addedMedia[key]) {
                                       // Toggle undo adding
                                       setAddedMedia((prev) => ({ ...prev, [key]: false }));
                                     } else {
-                                      addMediaAnalysis(analysisObj);
+                                      addMediaAnalysis(analysisData);
                                       setAddedMedia((prev) => ({ ...prev, [key]: true }));
                                     }
                                   }}
@@ -439,6 +467,7 @@ const toggleUserArticleInclusion = (index) => {
                               </div>
                             );
                           })}
+                        </div>
                         </div>
                       )}
                     </div>
@@ -516,10 +545,10 @@ const toggleUserArticleInclusion = (index) => {
       </div>
       )}
       {uploadedVideos && uploadedVideos.length > 0 && (
-        <div className="insights-document-container" style={{marginBottom: "300px"}}>
+        <div className="insights-document-container">
           <h3 className="insights-title">Uploaded Video Summaries</h3>
           {uploadedVideos.map((video, index) => (
-            <div key={`uploaded-video-${index}`} className="insights-item" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+            <div key={`uploaded-video-${index}`} className="insights-item">
               <h3 className="insights-header">
                 {index+1}{") "}{video.title}
               </h3>
@@ -533,29 +562,33 @@ const toggleUserArticleInclusion = (index) => {
           ))}
         </div>
       )}
+
       {fileInfo && (
         <div className="insights-document-container">
-          <h3 className="insights-title">Document Summary</h3>
+          <h3 className="insights-title">Uploaded Document Summary</h3>
           <p>
             <span className="insights-header">File Info: </span>
             {fileInfo}
           </p>
         </div>
       )}
+      
       <div className="insights-btn-container">
         <button
-          className="btn btn-primary"
+          className="btn btn-danger"
           style={{ textDecoration: 'none', color: 'white' }}
-          onClick={handleBackToInputQuery}
+          onClick={handleBackToPreviousStep}
         >
-          Back to AIRA
+          Back to AIRA Input Query
         </button>
-        <NextButton
-          buttonText="Generate report/ppt →"
-          onClick={(e) =>
-            handleDocumentsGeneration(e, { articleInclusions, videoInclusions, userArticleInclusions, userVideoInclusions, uploadedVideoInclusions })
+        <button
+        className="btn btn-success"
+        onClick={(e) =>
+          handleDocumentsGeneration(e, { articleInclusions, videoInclusions, userArticleInclusions, userVideoInclusions, uploadedVideoInclusions })
           }
-        />
+        >
+          Generate Report & Powerpoint
+        </button>
       </div>
     </div>
   );
