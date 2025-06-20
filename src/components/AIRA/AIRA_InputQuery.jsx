@@ -4,7 +4,7 @@ import "./AIRA_InputQuery.css";
 import Stepper from 'react-stepper-horizontal';
 import Trash from '../../assets/icons/trash-icon.png';
 
-function InputQuery({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_k, handleChangeTopK }) {
+function InputQuery({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_k, handleChangeTopK, urls, setUrls }) {
 
     // if (!userInfo) {
     //     return <div>Loading...</div>;
@@ -18,23 +18,18 @@ function InputQuery({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_
     //temporary email
     const userMail = "k@tinnolab.org";
 
-    const [urls, setUrls] = useState([""]);
-    
 
-    const handleUrlChange = (index, value) => {
-        const newUrls = [...urls];
-        newUrls[index] = value;
-        setUrls(newUrls);
-    };
     const handleAddUrl = () => setUrls([...urls, ""]);
     const handleDeleteUrl = (index) => setUrls(urls.filter((_, idx) => idx !== index));
 
     async function handleReset() {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/clear_db`, {
+            const response = await fetch("http://127.0.0.1:5000/clear_db", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                //temporary email
                 //body: JSON.stringify({ username: userInfo.userMail })
+                body: JSON.stringify({ username: userMail })
             });
             if (!response.ok) throw new Error("Network response was not ok");
             const responseData = await response.json();
@@ -101,7 +96,11 @@ function InputQuery({ query, setQuery, onSubmit, userInfo, onTranscriptAdd, top_
                                 className="url-input"
                                 type="text"
                                 value={url}
-                                onChange={(e) => handleUrlChange(idx, e.target.value)}
+                                onChange={e => {
+                                    const newUrls = [...urls];
+                                    newUrls[idx] = e.target.value;
+                                    setUrls(newUrls);
+                                }}
                                 placeholder={`URL ${idx + 1}`}
                             />
                             {idx === urls.length - 1 && (

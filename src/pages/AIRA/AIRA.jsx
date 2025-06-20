@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 // temporarily disable
 // import { auth } from "../Firebase";
 import InputQuery from "../../components/AIRA/AIRA_InputQuery";
-import DeepInsightsDisplay from "../../components/AIRA/DeepInsightsDisplay";
-import DocumentsDisplay from "../../components/AIRA/DocumentsDisplay";
+import DeepInsightsDisplay from "../../components/AIRA/AIRA_InsightsDisplay";
+import DocumentsDisplay from "../../components/AIRA/AIRA_DocumentGeneration";
 import TopBar from "../../components/TopBar/TopBar";
 import { SyncLoader } from "react-spinners"; 
  
@@ -18,7 +18,7 @@ function AIRA() {
     const [firstQueryCheck, setFirstQueryCheck] = useState(true);
     // User inputs
     const [query, setQuery] = useState('');
-    const [urls, setUrls] = useState('');
+    const [urls, setUrls] = useState([""]);
     const [top_k, setTopK] = useState(10);
 
     // Data for InsightsDisplay
@@ -45,8 +45,8 @@ function AIRA() {
         setTopK(k)
     };
 
-    const handleBackToInputQuery = () => {
-        setStep(1)
+    const handleBackToPreviousStep = () => {
+        setStep(prevStep => prevStep - 1);
     }
 
     const [showGuide, setShowGuide] = useState(false);
@@ -157,7 +157,7 @@ function AIRA() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ query, username: "k@tinnolab.org", //userInfo.userMail, 
-                top_k, urls })
+                top_k, urls: urls.filter(url => url.trim() !== '').join('\\n') })
             });
         
             if (!response.ok) {
@@ -408,7 +408,7 @@ function AIRA() {
                         query={query}
                         handleDocumentsGeneration={handleDocumentsGeneration}
                         addMediaAnalysis={handleAddMediaAnalysis}
-                        handleBackToInputQuery={handleBackToInputQuery}
+                        handleBackToPreviousStep={handleBackToPreviousStep}
                     />
                     </>
                 );
@@ -416,6 +416,7 @@ function AIRA() {
                 return (
                     <DocumentsDisplay
                         reportUrl={reportUrl}
+                        handleBackToPreviousStep={handleBackToPreviousStep}
                     />
                 );
             default:

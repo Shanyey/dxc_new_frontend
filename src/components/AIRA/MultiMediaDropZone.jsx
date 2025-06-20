@@ -218,28 +218,22 @@ const MultiMediaDropzone = ({
         >
           <button className="btn btn-success" variant="contained" onClick={uploadAllFiles}>
             {isUploading ? (
-              <Oval
-                visible={true}
-                height="20"
-                width="20"
-                color="#4fa94d"
-                secondaryColor="#4fa94d"
-                ariaLabel="oval-loading"
-              />
+              // <Oval
+              //   visible={true}
+              //   height="20"
+              //   width="20"
+              //   color="#4fa94d"
+              //   secondaryColor="#4fa94d"
+              //   ariaLabel="oval-loading"
+              // /> 
+              "Uploading..."
             ) : (
               "Upload All Files"
             )}
           </button> 
           <button className="btn btn-danger" onClick={handleReset} disabled={isResetting}>
             {isResetting ? (
-                <Oval
-                    visible={true}
-                    height="20"
-                    width="20"
-                    color="#4fa94d"
-                    secondaryColor="#4fa94d"
-                    ariaLabel="oval-loading"
-                />
+                "Loading..."
             ) : "Reset"}
          </button>
         </div>
