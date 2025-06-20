@@ -21,7 +21,7 @@ function BatchFileQueryPage() {
     }
   }, [chatHistory]);
 
-  // For users to select the 3 different GPT models: String to identify the model, label: String for Select Dropdown option at the top, deploymentName: to initialise the correct deployment in Azure
+  // For users to select the 2 different GPT models: String to identify the model, label: String for Select Dropdown option at the top, deploymentName: to initialise the correct deployment in Azure
   const models = [
     {
       value: "gpt-4o-mini",
@@ -121,13 +121,6 @@ function BatchFileQueryPage() {
   }
 
   const handleSubmit = async () => {
-    // console.log("Files submitted:", files);
-    // console.log("action prompt:", func.value);
-    // console.log("Selected model:", selectedModel);
-    // console.log("Updated language:", updatedLanguage);
-    // console.log("Updated prompt:", updatedPrompt);
-    // console.log("Function name selected:", func.naming);
-
     const formData = new FormData();
     files.forEach((file) => {
       formData.append("files", file);
@@ -139,9 +132,9 @@ function BatchFileQueryPage() {
     formData.append("personalisedPrompt", updatedPrompt);
 
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
     let attr_file_name = "llm_responses.zip";
     let endpoint = `${baseUrl}/batchfilequery`;
+
     if (func.naming === "imgquery") {
       alert("remove submit button for image query");
       return;
@@ -158,12 +151,13 @@ function BatchFileQueryPage() {
       responseType: "blob",
     });
 
-    // Create a download link for the ZIP file
+    // Create a download link for the result file
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
 
-    link.setAttribute("download", attr_file_name); // Set the desired file name
+    //download zip for bfq, .txt for collective summary
+    link.setAttribute("download", attr_file_name);
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -174,25 +168,30 @@ function BatchFileQueryPage() {
     e.preventDefault();
     if (!query.trim()) return;
 
+    // Set up form data
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    formData.append("model", selectedModel.value); //not sure which field to use yet
+    formData.append("query", query);
+    formData.append("chatHistory", JSON.stringify(chatHistory));
+    console.log(JSON.stringify(chatHistory));
+
+    // Update chat with new query
     const newUserMessage = { role: "user", content: query };
-
     setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
-
     setQuery("");
-
     setIsLoading(true);
 
+    // Get response from backend
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
     try {
       const response = await axios.post(
-        `${baseUrl}/test-rag/submit`,
+        `${baseUrl}/batchfilequery/imgquery`,
+        formData,
         {
-          query,
-          chat_history: chatHistory,
-          userEmail: user.email,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
       console.log("Response from server:", response.data);
@@ -200,17 +199,13 @@ function BatchFileQueryPage() {
       const res = response.data;
       const newAssistantMessage = {
         role: "assistant",
-        content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}`,
+        content: res.output,
       };
 
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         newAssistantMessage,
       ]);
-
-      if (chatBoxRef.current) {
-        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-      }
     } catch (error) {
       console.error("Error querying PDF:", error);
       setIsLoading(false);
