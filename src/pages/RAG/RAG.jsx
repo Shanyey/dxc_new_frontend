@@ -24,7 +24,7 @@ const RagPage = () => {
 
   const handleReset = () => {
     axios
-      .post(`${baseUrl}/test-rag/clear_db`, {
+      .post(`${baseUrl}/RAG/clear_db`, {
         userEmail: user.email,
       })
       .then((response) => {
@@ -66,36 +66,15 @@ const RagPage = () => {
     setIsUploading(true); // Start spinner
 
     try {
-      const response = await axios.post(
-        `${baseUrl}/test-rag/upload`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${baseUrl}/RAG/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setUploadStatus("Upload successful");
       setIsUploading(false);
     } catch (error) {
       console.error("Error uploading files:", error);
       setUploadStatus("Upload failed");
     }
-    // try {
-    //   const response = await fetch(`${baseUrl}/upload_documents`, {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Network response was not ok");
-    //   }
-
-    //   const res = await response.json();
-    //   setUploadStatus(res.status);
-    // } catch (error) {
-    //   console.error("Error uploading files:", error);
-    //   setUploadStatus("Upload failed");
-    // } finally {
-    //   setIsUploading(false); // Stop spinner
-    // }
   };
 
   const handleChatSubmit = async (e) => {
@@ -112,7 +91,7 @@ const RagPage = () => {
 
     try {
       const response = await axios.post(
-        `${baseUrl}/test-rag/submit`,
+        `${baseUrl}/RAG/submit`,
         {
           query,
           chat_history: chatHistory,

@@ -16,10 +16,10 @@ function BatchFileQueryPage() {
   const [query, setQuery] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   useEffect(() => {
-      if (chatBoxRef.current) {
-        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-      }
-    }, [chatHistory]);
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
 
   // For users to select the 3 different GPT models: String to identify the model, label: String for Select Dropdown option at the top, deploymentName: to initialise the correct deployment in Azure
   const models = [
@@ -28,9 +28,7 @@ function BatchFileQueryPage() {
       label: "GPT-4o-mini",
       deploymentName: "gpt4-o-mini",
     },
-    { value: "gpt-4o", 
-      label: "GPT-4o", 
-      deploymentName: "gpt4o" },
+    { value: "gpt-4o", label: "GPT-4o", deploymentName: "gpt4o" },
   ];
 
   // Default model selected is GPT4o mini
@@ -47,7 +45,7 @@ function BatchFileQueryPage() {
     "No personalised prompt set."
   );
 
-  // 4 functions.  value: To be passed into BatchProcessing.jsx component as the prompt. label: String for Select Dropdown option for user to choose function. naming: String to be passed into BatchProcessing.jsx component as props for naming of download file
+  // Value: To be passed into BatchProcessing.jsx component as the prompt. label: String for Select Dropdown option for user to choose function. naming: String to be passed into BatchProcessing.jsx component as props for naming of download file
   const functions = [
     {
       value: "Summarize the following text: ",
@@ -128,6 +126,7 @@ function BatchFileQueryPage() {
     // console.log("Selected model:", selectedModel);
     // console.log("Updated language:", updatedLanguage);
     // console.log("Updated prompt:", updatedPrompt);
+    // console.log("Function name selected:", func.naming);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -139,40 +138,51 @@ function BatchFileQueryPage() {
     formData.append("language", updatedLanguage);
     formData.append("personalisedPrompt", updatedPrompt);
 
-    const response = await axios.post(
-      "http://127.0.0.1:5000/test-bfq",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        responseType: "blob",
-      }
-    );
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+    let attr_file_name = "llm_responses.zip";
+    let endpoint = `${baseUrl}/batchfilequery`;
+    if (func.naming === "imgquery") {
+      alert("remove submit button for image query");
+      return;
+    } else if (func.naming === "colsum") {
+      endpoint = `${endpoint}/colsum`;
+      attr_file_name = "summary.txt";
+      console.log("Endpoint:", endpoint);
+    }
+
+    const response = await axios.post(endpoint, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      responseType: "blob",
+    });
 
     // Create a download link for the ZIP file
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "llm_responses.zip"); // Set the desired file name
+
+    link.setAttribute("download", attr_file_name); // Set the desired file name
     document.body.appendChild(link);
     link.click();
     link.remove();
     window.URL.revokeObjectURL(url);
-    };
+  };
 
-    const handleChatSubmit = async (e) => {
-      e.preventDefault();
-      if (!query.trim()) return;
+  const handleChatSubmit = async (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
 
-      const newUserMessage = { role: "user", content: query };
+    const newUserMessage = { role: "user", content: query };
 
-      setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
+    setChatHistory((prevChatHistory) => [...prevChatHistory, newUserMessage]);
 
-      setQuery("");
+    setQuery("");
 
-      setIsLoading(true);
+    setIsLoading(true);
 
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
     try {
       const response = await axios.post(
         `${baseUrl}/test-rag/submit`,
@@ -191,23 +201,22 @@ function BatchFileQueryPage() {
       const newAssistantMessage = {
         role: "assistant",
         content: `${res.answer}\n\nSource: ${res.pdf_file_name}, Page: ${res.page_number}`,
-        };
+      };
 
-        setChatHistory((prevChatHistory) => [
-          ...prevChatHistory,
-          newAssistantMessage,
-        ]);
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        newAssistantMessage,
+      ]);
 
-        if (chatBoxRef.current) {
-          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-        }
-      } catch (error) {
-        console.error("Error querying PDF:", error);
-        setIsLoading(false);
-        return;
+      if (chatBoxRef.current) {
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
       }
+    } catch (error) {
+      console.error("Error querying PDF:", error);
+      setIsLoading(false);
+      return;
     }
-
+  };
 
   // --------------------------- UseEffect ---------------------------
   const isMounted = useRef(false);
@@ -236,7 +245,6 @@ function BatchFileQueryPage() {
     }
   }, [updatedPrompt]);
 
-  
   return (
     <>
       <div className="page">
@@ -322,82 +330,73 @@ function BatchFileQueryPage() {
             </div>
           )}
 
-          {/* {(func.label == "Image Query") && (
-            <div>
-              <div className="translation-container">
-                <label>Input your own prompt:</label>
-                <input
-                  type="text"
-                  placeholder="For eg, 'Extract the personnel names mentioned'"
-                  value={personalisedPrompt}
-                  onChange={handlePersonalisedPromptChange}
-                  id="personalised-input"
-                  className="translation-input"
-                />
-                <button
-                  className="translation-button"
-                  onClick={handlePersonalisedPromptClick}
-                  id="personalised-input-button"
-                >
-                  Set Prompt
-                </button>
-              </div>
-              <div className="translation-container">
-                <label className="font-bold text-sm">
-                  Your prompt: {updatedPrompt}
-                </label>
-              </div>
-            </div>
-          )} */}
-
           <Dropzone
-            acceptedFileTypes={["application/pdf", "text/plain"]}
+            acceptedFileTypes={
+              func.label === "Image Query"
+                ? [
+                    "image/png",
+                    "image/jpeg",
+                    "image/jpg",
+                    // "image/gif",
+                    // "image/bmp",
+                    // "image/webp",
+                  ]
+                : ["application/pdf", "text/plain"]
+            }
             files={files}
             setFiles={setFiles}
           />
-          <button type="submit" className="sendButton" aria-label="Send Message" onClick={handleSubmit}>
+          <button
+            type="submit"
+            className="sendButton"
+            aria-label="Send Message"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>
 
         {/* only renders if user chooses image query */}
-        {(func.label == "Image Query") && (
-        <div>
-        <form onSubmit={handleChatSubmit} className="inputContainer">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask a question about the Image..."
-              className="chatInput"
-              aria-label="Chat Input"
-            />
-            <button
-              type="submit"
-              className="sendButton"
-              aria-label="Send Message"
-            >
-              Send
-            </button>
-        </form>
-        <div ref={chatBoxRef} className="chatBox">
-          {chatHistory.map((msg, index) => (
-            <div
-              key={msg.id || index}
-              className={`message ${
-                msg.role === "user" ? "user" : "assistant"
-              }`}
+        {func.label == "Image Query" && (
+          <div>
+            <form onSubmit={handleChatSubmit} className="inputContainer">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ask a question about the Image..."
+                className="chatInput"
+                aria-label="Chat Input"
+              />
+              <button
+                type="submit"
+                className="sendButton"
+                aria-label="Send Message"
               >
-              <p>
-                <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>{" "}
-                {msg.content}
-              </p>
+                Send
+              </button>
+            </form>
+
+            <div ref={chatBoxRef} className="chatBox">
+              {chatHistory.map((msg, index) => (
+                <div
+                  key={msg.id || index}
+                  className={`message ${
+                    msg.role === "user" ? "user" : "assistant"
+                  }`}
+                >
+                  <p>
+                    <strong>
+                      {msg.role === "user" ? "You" : "Assistant"}:
+                    </strong>{" "}
+                    {msg.content}
+                  </p>
+                </div>
+              ))}
             </div>
-            ))} 
           </div>
+        )}
       </div>
-      )}
-    </div>
     </>
   );
 }
